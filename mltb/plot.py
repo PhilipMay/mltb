@@ -1,12 +1,12 @@
-import matplotlib.pyplot
+import matplotlib.pyplot as plt
 
 # see https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.twinx.html
 def twin_axes_plot(values_1, label_1, values_2, label_2, shift_1=0, shift_2=0, title=None, label_x = 'x', color_1 = 'tab:red', color_2 = 'tab:blue'):
     """Create twin axes plot."""
-    fig, ax1 = matplotlib.pyplot.subplots()
+    fig, ax1 = plt.subplots()
     
     if title != None:
-        matplotlib.pyplot.title(title)
+        plt.title(title)
 
     ax1.set_xlabel(label_x)
 
@@ -24,16 +24,16 @@ def twin_axes_plot(values_1, label_1, values_2, label_2, shift_1=0, shift_2=0, t
     # see https://matplotlib.org/users/tight_layout_guide.html
     fig.tight_layout() 
 
-    matplotlib.pyplot.show()
+    plt.show()
 
 # see https://matplotlib.org/api/_as_gen/matplotlib.pyplot.boxplot.html
 def boxplot(values, labels=None, title=None):
     """Create boxplot."""
-    _, ax = matplotlib.pyplot.subplots()
+    _, ax = plt.subplots()
     
     if title !=  None:
-        matplotlib.pyplot.title(title)
+        plt.title(title)
 
     ax.boxplot(values, labels=labels)
 
-    matplotlib.pyplot.show()
+    plt.show()
