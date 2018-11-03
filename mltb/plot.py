@@ -25,3 +25,15 @@ def twin_axes_plot(values_1, label_1, values_2, label_2, shift_1=0, shift_2=0, t
     fig.tight_layout() 
 
     matplotlib.pyplot.show()
+
+# see https://matplotlib.org/api/_as_gen/matplotlib.pyplot.boxplot.html
+def boxplot(values, labels=None, title=None):
+    """Create boxplot."""
+    _, ax = matplotlib.pyplot.subplots()
+    
+    if title !=  None:
+        matplotlib.pyplot.title(title)
+
+    ax.boxplot(values, labels=labels)
+
+    matplotlib.pyplot.show()
