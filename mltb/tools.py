@@ -1,3 +1,4 @@
+"""Tools."""
 def append_dict_to_dict(target, source):
     if target == {}:
         for key, value in source.items():

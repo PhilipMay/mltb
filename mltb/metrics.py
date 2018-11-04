@@ -1,3 +1,4 @@
+"""Metrics."""
 import sklearn
 
 def f1_from_roc(fpr, tpr, pos, neg):

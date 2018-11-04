@@ -1,3 +1,4 @@
+"""Keras tools."""
 import sklearn
 import numpy
 import keras
@@ -6,15 +7,24 @@ from . import metrics
 from . import tools 
 
 class BinaryClassifierMetricsCallback(keras.callbacks.Callback):
-    """Keras callback to calculate metrics of a binary classifier for each epoch."""
+    """Keras callback to calculate metrics of a binary classifier for each epoch.
     
-    def __init__(self, val_data, val_labels, pos_label):
+    # Arguments
+        val_data: The validation data.
+        val_labels: Validation labels.
+        pos_label: Positive label (default is `1`).
+
+    # Properties
+        metrics: Dictionary with list of metric data for each epoch.
+    """
+    
+    def __init__(self, val_data, val_labels, pos_label=1):
         self.val_data = val_data
         self.val_labels = val_labels
         self.pos_label = pos_label
         self.hist = {}
     
-    def on_epoch_end(self, batch, logs={}):        
+    def on_epoch_end(self, batch, logs={}):       
         predict_results = self.model.predict(self.val_data)
         
         round_predict_results = numpy.rint(predict_results)
