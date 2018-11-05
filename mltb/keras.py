@@ -31,14 +31,14 @@ class BinaryClassifierMetricsCallback(keras.callbacks.Callback):
         round_predict_results = numpy.rint(predict_results)
         
         roc_auc = sklearn.metrics.roc_auc_score(self.val_labels, predict_results)
-        tools.append_to_dict(self.metrics, "roc_auc", roc_auc)
+        self.metrics.setdefault("roc_auc", []).append(roc_auc)
         
         f1 = sklearn.metrics.f1_score(self.val_labels, round_predict_results)
-        tools.append_to_dict(self.metrics, "f1", f1)
+        self.metrics.setdefault("f1", []).append(f1)
 
         accuracy = sklearn.metrics.accuracy_score(self.val_labels, round_predict_results)
-        tools.append_to_dict(self.metrics, "accuracy", accuracy)
+        self.metrics.setdefault("accuracy", []).append(accuracy)
 
         best_f1, best_f1_threshold = metrics.best_f1_score(self.val_labels, predict_results, self.pos_label)
-        tools.append_to_dict(self.metrics, "best_f1", best_f1)
-        tools.append_to_dict(self.metrics, "best_f1_threshold", best_f1_threshold)
+        self.metrics.setdefault("best_f1", []).append(best_f1)
+        self.metrics.setdefault("best_f1_threshold", []).append(best_f1_threshold)
