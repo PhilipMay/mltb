@@ -1,5 +1,5 @@
 """Keras tools."""
-import sklearn
+import sklearn.metrics
 import numpy
 import keras
 
@@ -19,6 +19,7 @@ class BinaryClassifierMetricsCallback(keras.callbacks.Callback):
     """
     
     def __init__(self, val_data, val_labels, pos_label=1):
+        super().__init__()
         self.val_data = val_data
         self.val_labels = val_labels
         self.pos_label = pos_label
