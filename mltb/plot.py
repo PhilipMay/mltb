@@ -1,5 +1,6 @@
 """Plot tools."""
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # see https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.twinx.html
 def twin_axes_plot(values_1, label_1, values_2, label_2, shift_1=0, shift_2=0, 
@@ -29,13 +30,22 @@ def twin_axes_plot(values_1, label_1, values_2, label_2, shift_1=0, shift_2=0,
     plt.show()
 
 # see https://matplotlib.org/api/_as_gen/matplotlib.pyplot.boxplot.html
-def boxplot(values, labels=None, title=None):
+def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None):
     """Create boxplot."""
-    _, ax = plt.subplots()
-    
-    if title !=  None:
-        plt.title(title)
+   
+    sns.set(style="whitegrid")
+    ax = sns.boxplot(data=values)
 
-    ax.boxplot(values, labels=labels)
+    if labels != None:
+        plt.xticks(range(len(labels)), labels)
+
+    if xlabel != None:
+        ax.set(xlabel=xlabel)
+
+    if ylabel != None:
+        ax.set(ylabel=ylabel)
+
+    if title !=  None:
+        ax.set(title=title)
 
     plt.show()
