@@ -48,3 +48,15 @@ def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None):
         ax.set(title=title)
 
     plt.show()
+
+def boxplot_dict(values_dict, title=None, xlabel=None, ylabel=None):
+    """Create boxplot form dictionary."""
+   
+    values = []
+    labels = []
+
+    for key, value in values_dict.items():
+        values.append(value)
+        labels.append(key)
+    
+    boxplot(values, labels=labels, title=title, xlabel=xlabel, ylabel=ylabel)
