@@ -1,6 +1,6 @@
 """Keras tools."""
 import sklearn.metrics
-import numpy
+import numpy as np
 import keras
 
 from . import metrics
@@ -25,7 +25,7 @@ class BinaryClassifierMetricsCallback(keras.callbacks.Callback):
         logs = logs or {}     
         predict_results = self.model.predict(self.val_data)
         
-        round_predict_results = numpy.rint(predict_results)
+        round_predict_results = np.rint(predict_results)
         
         roc_auc = sklearn.metrics.roc_auc_score(self.val_labels, predict_results)
         logs["roc_auc"] = roc_auc
