@@ -66,7 +66,12 @@ def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None):
     plt.show()
 
 def boxplot_dict(values_dict, title=None, xlabel=None, ylabel=None):
-    """Create boxplot form dictionary."""
+    """Create boxplot form dictionary.
+    
+    Parameters
+    ----------
+    values_dict : dictionary with one entry per box plot.
+    """
    
     values = []
     labels = []
