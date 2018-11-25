@@ -30,7 +30,23 @@ def twin_axes_plot(values_1, label_1, values_2, label_2, shift_1=0, shift_2=0,
     plt.show()
 
 def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None):
-    """Create boxplot."""
+    """Create boxplot.
+    
+    Prints one or more boxplots in a single diagram.
+
+    Parameters
+    ----------
+    values : iterable object of numbers or iterable object of iterable objects of numbers
+        The values to draw the boxplot for. If you want to draw 
+        more then one boxplot you have to give an iterable object 
+        of iterable objects with numbers.
+    labels : str or iterable object of str, optional
+        The labels of the boxplots.
+    xlabel : str, optional
+        Label name of the x-axis.
+    ylabel : str, optional
+        Label name of the y-axis.
+    """
    
     sns.set(style="whitegrid")
     ax = sns.boxplot(data=values)
