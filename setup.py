@@ -20,7 +20,6 @@ setuptools.setup(
         'numpy', 
         'keras',
         'matplotlib',
-        'seaborn',
     ],
     keywords='keras metric',
     classifiers=[

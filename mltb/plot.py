@@ -1,11 +1,11 @@
 """Plot tools."""
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 # see https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.twinx.html
 def twin_axes_plot(values_1, label_1, values_2, label_2, shift_1=0, shift_2=0, 
                    title=None, label_x = 'x', color_1 = 'tab:red', color_2 = 'tab:blue'):
     """Create twin axes plot."""
+
     fig, ax1 = plt.subplots()
     
     if title != None:
@@ -36,11 +36,11 @@ def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None):
 
     Parameters
     ----------
-    values : iterable object of numbers or iterable object of iterable objects of numbers
+    values : iterable of numbers for one boxplot or iterable of iterable of numbers for several
         The values to draw the boxplot for. If you want to draw 
-        more then one boxplot you have to give an iterable object 
-        of iterable objects with numbers.
-    labels : str or iterable object of str, optional
+        more then one boxplot you have to give an iterable  
+        of iterable with numbers.
+    labels : str or iterable of str, optional
         The labels of the boxplots.
     xlabel : str, optional
         Label name of the x-axis.
@@ -48,20 +48,18 @@ def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None):
         Label name of the y-axis.
     """
    
-    sns.set(style="whitegrid")
-    ax = sns.boxplot(data=values)
+    _, ax = plt.subplots()
+    
+    if title is not None:
+        ax.set_title(title)
 
-    if labels != None:
-        plt.xticks(range(len(labels)), labels)
-
-    if xlabel != None:
+    if xlabel is not None:
         ax.set(xlabel=xlabel)
 
-    if ylabel != None:
+    if ylabel is not None:
         ax.set(ylabel=ylabel)
 
-    if title !=  None:
-        ax.set(title=title)
+    ax.boxplot(values, labels=labels)
 
     plt.show()
 
