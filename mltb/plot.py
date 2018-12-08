@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 def twin_axes_timeseries_plot(values_1, label_1, values_2, label_2, 
                               start_timestep_number=0, shift_1=0, shift_2=0, 
                               title=None, label_x = 'Step', color_1 = 'tab:red', color_2 = 'tab:blue'):
-    """Create twin axes plot."""
+    """Create twin axes timeseries plot."""
 
     fig, ax1 = plt.subplots()
     
@@ -63,6 +63,8 @@ def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None):
         ax.set(ylabel=ylabel)
 
     ax.boxplot(values, labels=labels)
+
+    plt.grid(b=True, axis='y', linestyle='--')
 
     plt.show()
 
