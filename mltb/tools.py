@@ -16,7 +16,15 @@ def multi_param_call(function, param_dict, iterations, verbose=1):
     for key, value in param_dict.items():
         for i in range(iterations):
             f_result = function(value)
-            result.setdefault(key, []).append(f_result)
+
+            if isinstance(f_result, dict):
+                for f_result_key, f_result_value in f_result.items():
+                    sub_dict = result.setdefault(f_result_key, {})
+                    sub_dict.setdefault(key, []).append(f_result_value)
+
+            else: 
+                result.setdefault(key, []).append(f_result)
+
             if verbose == 1:
                 print("Done with %s - iteration %i of %i." % (key, i+1, iterations))
     return result
