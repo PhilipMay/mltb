@@ -6,4 +6,6 @@ c = [4,5,4,3,2,4,1,0,5,4,3]
 
 my_dict = {'a' : a, 'b' : b, 'c' : c}
 
-mltb.tools.print_ttest_combinations(my_dict)
+result = mltb.tools.ttest_combinations(my_dict)
+
+print(result)
