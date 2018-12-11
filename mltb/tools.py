@@ -1,10 +1,14 @@
+import itertools
+from scipy import stats
+
+
 def multi_param_call(function, param_dict, iterations, verbose=1):
-    """Call function multiple times and return dict with resultsself.
+    """Call function multiple times and return dict with results.
 
     Parameters
     ----------
     function
-        The function to callself.
+        The function to call.
     param_dict : dictionary
         Dictionary with params that are used to call the function.
     iterations : int
@@ -28,3 +32,11 @@ def multi_param_call(function, param_dict, iterations, verbose=1):
             if verbose == 1:
                 print("Done with %s - iteration %i of %i." % (key, i+1, iterations))
     return result
+
+def print_ttest_combinations(values_dict):
+    for key_pair in itertools.combinations(values_dict.keys(), 2):
+        key_0 = key_pair[0]
+        key_1 = key_pair[1]
+        print('p-value', key_0, 'vs.', key_1, 'is', 
+              stats.ttest_ind(values_dict[key_0], values_dict[key_1])[1]
+             )
