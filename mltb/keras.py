@@ -9,12 +9,15 @@ from . import tools
 class BinaryClassifierMetricsCallback(keras.callbacks.Callback):
     """Keras callback to calculate metrics of a binary classifier for each epoch.
     
-    # Arguments
-        val_data: The validation data.
-        val_labels: Validation labels.
-        pos_label: Positive label (default is `1`).
+    Attributes
+    ----------
+    val_data
+        The validation data.
+    val_labels
+        The validation labels.
+    pos_label : int, optional
+        The positive label number. The default is 1.
     """
-    
     def __init__(self, val_data, val_labels, pos_label=1):
         super().__init__()
         self.val_data = val_data
