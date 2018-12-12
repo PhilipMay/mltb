@@ -1,16 +1,23 @@
-"""Metrics."""
+"""A collection of metrics functions or tools."""
 import sklearn
 
 def f1_from_roc(fpr, tpr, pos, neg):
     """Calculate f1 score from roc values.
     
-    Args:
-        fpr (float): false positive rate
-        tpr (float): true positive rate
-        pos (int): number of positive labels
-        neg (int): number of negative labels
+    Parameters
+    ----------
+        fpr : float
+            The false positive rate.
+        tpr : float
+            The true positive rate.
+        pos : int
+            The number of positive labels.
+        neg : int
+            The number of negative labels.
         
-    Returns:
+    Returns
+    -------
+    float
         The f1 score.
     """
     fp = fpr * neg
@@ -25,14 +32,7 @@ def pos_neg(labels, pos_label):
     return pos, neg        
         
 def best_f1_score(labels, predictions, pos_label):
-    """Calculate best f1 score with its threshold.
-    
-    Args:
-        labels: 
-    
-    Returns:
-        
-    """
+    """Calculate best f1 score with its threshold."""
     fpr, tpr, thresholds = sklearn.metrics.roc_curve(labels, predictions, pos_label=pos_label)
     pos, neg = pos_neg(labels, 1)
     
