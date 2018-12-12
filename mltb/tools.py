@@ -1,3 +1,4 @@
+"""A collection of generic machine learning tools."""
 import itertools
 from scipy import stats
 
