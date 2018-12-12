@@ -1,12 +1,41 @@
-"""Plot tools."""
+"""A collection of plot tools."""
 import matplotlib.pyplot as plt
 
 # see https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.twinx.html
 def twin_axes_timeseries_plot(values_1, label_1, values_2, label_2, 
                               start_timestep_number=0, shift_1=0, shift_2=0, 
                               title=None, label_x = 'Step', color_1 = 'tab:red', color_2 = 'tab:blue'):
-    """Create twin axes timeseries plot."""
+    """Create twin axes timeseries plot.
+    
+    Plots two different timeseries curves in one diagram but two different y-axes.
 
+    Parameters
+    ----------
+    values_1 : array_like
+        Values for the first timeseries curve.
+    label_1 : str
+        Label for the first timeseries curve.
+    values_2 : array_like
+        Values for the second timeseries curve.
+    label_2 : str
+        Label for the second timeseries curve.
+    start_timestep_number : int, optional
+        Number for first point in time. Default is 0.
+    shift_1 : int, optional
+        Number of timesteps to shift the first timeseries curve.
+        Can be positive or negative. Default is 0.
+    shift_2 : int, optional
+        Number of timesteps to shift the second timeseries curve.
+        Can be positive or negative. Default is 0.
+    title : str, optional
+        Title of the plot.
+    label_x : str, optional
+        Label for the x-axis (timeseries axis). Default is 'Step'.
+    color_1 : str, optional
+        Color of first timeseries curve. Default is 'tab:red'.
+    color_2 : str, optional
+        Color of second timeseries curve. Default is 'tab:blue'.
+    """
     fig, ax1 = plt.subplots()
     
     if title != None:
@@ -39,18 +68,19 @@ def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None):
 
     Parameters
     ----------
-    values : iterable of numbers for one boxplot or iterable of iterable of numbers for several
+    values : array_like of numbers for one boxplot or array_like of array_like of numbers for several
         The values to draw the boxplot for. If you want to draw 
-        more then one boxplot you have to give an iterable  
-        of iterable with numbers.
-    labels : str or iterable of str, optional
+        more then one boxplot you have to give an array_like  
+        of array_like with numbers.
+    labels : str or array_like of str, optional
         The labels of the boxplots.
+    title : str, optional
+        Title of the plot.    
     xlabel : str, optional
         Label name of the x-axis.
     ylabel : str, optional
         Label name of the y-axis.
     """
-   
     _, ax = plt.subplots()
     
     if title is not None:
@@ -66,6 +96,8 @@ def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None):
 
     plt.grid(b=True, axis='y', linestyle='--')
 
+    plt.xticks(rotation=90)
+
     plt.show()
 
 def boxplot_dict(values_dict, title=None, xlabel=None, ylabel=None):
@@ -73,7 +105,16 @@ def boxplot_dict(values_dict, title=None, xlabel=None, ylabel=None):
     
     Parameters
     ----------
-    values_dict : dictionary with one entry per box plot.
+    values_dict : dict with str to array_like
+        Dictionary with one entry per box plot. The key (str) 
+        is the name of the boxplot, the value (array_like) 
+        contains the values to plot.
+    title : str, optional
+        Title of the plot.    
+    xlabel : str, optional
+        Label name of the x-axis.
+    ylabel : str, optional
+        Label name of the y-axis.
     """
    
     values = []
