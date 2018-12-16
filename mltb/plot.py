@@ -61,7 +61,7 @@ def twin_axes_timeseries_plot(values_1, label_1, values_2, label_2,
 
     plt.show()
 
-def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None):
+def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None, vert=True):
     """Create boxplot.
     
     Prints one or more boxplots in a single diagram.
@@ -80,6 +80,8 @@ def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None):
         Label name of the x-axis.
     ylabel : str, optional
         Label name of the y-axis.
+    vert : bool, optional
+        If True (default), makes the boxes vertical. If False, everything is drawn horizontally.
     """
     _, ax = plt.subplots()
     
@@ -92,7 +94,7 @@ def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None):
     if ylabel is not None:
         ax.set(ylabel=ylabel)
 
-    ax.boxplot(values, labels=labels)
+    ax.boxplot(values, labels=labels, vert=vert)
 
     plt.grid(b=True, axis='y', linestyle='--')
 
@@ -100,7 +102,7 @@ def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None):
 
     plt.show()
 
-def boxplot_dict(values_dict, title=None, xlabel=None, ylabel=None):
+def boxplot_dict(values_dict, title=None, xlabel=None, ylabel=None, vert=True):
     """Create boxplot form dictionary.
     
     Parameters
@@ -115,6 +117,8 @@ def boxplot_dict(values_dict, title=None, xlabel=None, ylabel=None):
         Label name of the x-axis.
     ylabel : str, optional
         Label name of the y-axis.
+    vert : bool, optional
+        If True (default), makes the boxes vertical. If False, everything is drawn horizontally.
     """
    
     values = []
@@ -124,4 +128,4 @@ def boxplot_dict(values_dict, title=None, xlabel=None, ylabel=None):
         values.append(value)
         labels.append(key)
     
-    boxplot(values, labels=labels, title=title, xlabel=xlabel, ylabel=ylabel)
+    boxplot(values, labels=labels, title=title, xlabel=xlabel, ylabel=ylabel, vert=vert)
