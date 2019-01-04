@@ -45,7 +45,7 @@ def multi_param_call(function, param_dict, iterations, verbose=1):
                 result.setdefault(key, []).append(f_result)
 
             if verbose == 1:
-                print("Done with {} - iteration {} of {}. Result: {}".format(key, i+1, iterations, f_result))
+                print("Done with iteration {} of {} for {}. Result: {}".format(i+1, iterations, key, f_result))
     return result
 
 def ttest_combinations(values_dict):
