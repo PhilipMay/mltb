@@ -20,6 +20,7 @@ setuptools.setup(
         'numpy', 
         'keras',
         'matplotlib',
+        'tensorflow',
     ],
     keywords='keras metric',
     classifiers=[
