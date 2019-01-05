@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="mltb",
-    version="0.0.12",
+    version="0.0.13",
     maintainer="Philip May",
     author="Philip May",
     author_email="pm@eniak.de",
@@ -20,6 +20,7 @@ setuptools.setup(
         'numpy', 
         'keras',
         'matplotlib',
+        'tqdm',
     ],
     keywords='keras metric',
     classifiers=[

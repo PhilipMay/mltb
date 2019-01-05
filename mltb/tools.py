@@ -1,5 +1,6 @@
 """A collection of generic machine learning tools."""
 import itertools
+from tqdm import tqdm
 from scipy import stats
 
 def multi_param_call(function, param_dict, iterations, verbose=1):
@@ -17,7 +18,8 @@ def multi_param_call(function, param_dict, iterations, verbose=1):
     iterations : int
         Number of iterations that function will be called for each entry in param_dict.
     verbose : int, optional
-        If 1 status will be print, else not. Default is 1.
+        If 1 a progress bar will be shown. If 2 detailed status will be print
+        after each iteration. Default is 1.
 
     Returns
     -------
@@ -32,6 +34,9 @@ def multi_param_call(function, param_dict, iterations, verbose=1):
         `param_dict`. The value is an array with one result for each call.
     """
     result = {}
+    if verbose == 1:
+        number_of_iterations = len(param_dict) * iterations
+        pbar = tqdm(total=number_of_iterations)
     for key, value in param_dict.items():
         for i in range(iterations):
             f_result = function(value)
@@ -43,9 +48,13 @@ def multi_param_call(function, param_dict, iterations, verbose=1):
 
             else: 
                 result.setdefault(key, []).append(f_result)
-
             if verbose == 1:
+                pbar.update(1)    
+            elif verbose == 2:
                 print("Done with iteration {} of {} for {}. Result: {}".format(i+1, iterations, key, f_result))
+    if verbose == 1:
+        pbar.close()
+        print()
     return result
 
 def ttest_combinations(values_dict):
