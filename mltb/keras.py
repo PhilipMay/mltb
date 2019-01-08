@@ -32,6 +32,9 @@ class BinaryClassifierMetricsCallback(keras.callbacks.Callback):
 
         roc_auc = sklearn.metrics.roc_auc_score(self.val_labels, predict_results)
         logs["roc_auc"] = roc_auc
+        
+        average_precision = sklearn.metrics.average_precision_score(self.val_labels, predict_results)
+        logs['average_precision'] = average_precision
 
         f1 = sklearn.metrics.f1_score(self.val_labels, round_predict_results)
         logs["f1"] = f1
