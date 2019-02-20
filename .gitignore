@@ -4,3 +4,4 @@ mltb.egg-info
 dist
 build
 .spyproject
+.idea
