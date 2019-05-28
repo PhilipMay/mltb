@@ -16,6 +16,11 @@ def lightgbm_multi_class_f1_score_factory(num_classes, average):
         false negatives and false positives.
         'macro': Calculate metrics for each label, and find their unweighted mean.
         This does not take label imbalance into account.
+
+    See Also
+    --------
+    sklearn.metrics.f1_score : https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html
+    LightGBM Training API: https://lightgbm.readthedocs.io/en/latest/Python-API.html#training-api
     """
     if average != 'macro' and average != 'micro':
         raise ValueError("average should be 'macro' or 'micro'")
