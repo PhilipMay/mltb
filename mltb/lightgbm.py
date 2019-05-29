@@ -1,4 +1,4 @@
-"""Light GBM tools."""
+"""LightGBM tools."""
 
 from sklearn.metrics import f1_score
 import numpy as np
@@ -10,17 +10,19 @@ def lightgbm_multi_class_f1_score_factory(num_classes, average):
     Parameters
     ----------
     num_classes : int
-        Number of classes co classify.
+        Number of classes to classify.
     average : string string, ['micro' or 'macro']
-        'micro': Calculate metrics globally by counting the total true positives,
-        false negatives and false positives.
-        'macro': Calculate metrics for each label, and find their unweighted mean.
-        This does not take label imbalance into account.
+        ``'micro'`` :
+            Calculate metrics globally by counting the total true positives,
+            false negatives and false positives.
+        ``'macro'`` :
+            Calculate metrics for each label, and find their unweighted mean.
+            This does not take label imbalance into account.
 
     See Also
     --------
-    sklearn.metrics.f1_score : https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html
-    LightGBM Training API: https://lightgbm.readthedocs.io/en/latest/Python-API.html#training-api
+    * `sklearn.metrics.f1_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html>`
+    * `LightGBM Training API: <https://lightgbm.readthedocs.io/en/latest/Python-API.html#training-api>`
     """
     if average != 'macro' and average != 'micro':
         raise ValueError("average should be 'macro' or 'micro'")
