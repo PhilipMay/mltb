@@ -5,7 +5,7 @@ import numpy as np
 
 
 def lightgbm_multi_class_f1_score_factory(num_classes, average):
-    """Factory for LightGBM multi class F1 Score function.
+    """Factory for LightGBM multi class F1-score function.
 
     Parameters
     ----------
