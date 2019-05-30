@@ -2,9 +2,9 @@
 This is the machine learning tool box. A collection of userful machine learning tools intended for reuse and extension.
 
 The toolbox contains the following modules:
-* keras - callbacks for metrics and tools
-* lightgbm - metric tools
-* metrics - several metrics 
+* keras - Keras callbacks for metrics and various Keras tools
+* lightgbm - metric tool functions for LightGBM
+* metrics - several metric implementations 
 * plot - plot and visualisation tools
 * tools - various statistical tools
 
