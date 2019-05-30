@@ -11,11 +11,11 @@ def multi_class_f1_score_factory(num_classes, average):
     ----------
     num_classes : int
         Number of classes to classify.
-    average : string string, ['micro' or 'macro']
-        ``'micro'`` :
+    average : string, 'micro' or 'macro'
+        ``'micro'``
             Calculate metrics globally by counting the total true positives,
             false negatives and false positives.
-        ``'macro'`` :
+        ``'macro'``
             Calculate metrics for each label, and find their unweighted mean.
             This does not take label imbalance into account.
 
@@ -52,7 +52,7 @@ def binary_class_f1_score(y_pred, data):
     Returns
     -------
     (eval_name, eval_result, is_higher_better)
-        ``'eval_name'`` :
+        ``'eval_name'`` :  string
             is always 'f1' - the name of the metric
         ``'eval_result'`` : float
             is the result of the metric
@@ -106,7 +106,7 @@ def binary_class_accuracy_score(y_pred, data):
     Returns
     -------
     (eval_name, eval_result, is_higher_better)
-        ``'eval_name'`` :
+        ``'eval_name'`` : string
             is always 'accuracy' - the name of the metric
         ``'eval_result'`` : float
             is the result of the metric
