@@ -1,11 +1,11 @@
 # Machine Learning Tool Box
 This is the machine learning tool box. A collection of userful machine learning tools intended for reuse and extension.
 The toolbox contains the following modules:
-* keras - Keras callbacks for metrics and various Keras tools
+* keras - Keras callback for various metrics and various other Keras tools
 * lightgbm - metric tool functions for LightGBM
 * metrics - several metric implementations 
 * plot - plot and visualisation tools
-* tools - various statistical tools
+* tools - various (i.a. statistical) tools
 
 ## Module: lightgbm
 This module implements metric functions that are not included in LightGBM. 
@@ -22,9 +22,10 @@ bst = lgb.train(param,
 ```
 
 ## Module: keras
-This module implements a callback function for Keras. 
-It calculates different metrics like ROC-AUC- and F1-Score. Because the callback adds
-these values to the `logs` dictionary it is possible to use the `EarlyStopping` callback
+This module provides ROC-AUC- and F1-metrics (which are not included in Keras) 
+in form of a callback. 
+Because the callback adds these values to the internal `logs` dictionary it is 
+possible to use the `EarlyStopping` callback
 to do early stopping on these metrics. The usage looks like this:
 ```
 bcm_callback = mltb.keras.BinaryClassifierMetricsCallback(val_data, val_labels)
