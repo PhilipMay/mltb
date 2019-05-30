@@ -34,8 +34,11 @@ es_callback = callbacks.EarlyStopping(monitor='roc_auc', patience=5,  mode='max'
 history = network.fit(train_data, train_labels, 
                       epochs=1000, 
                       batch_size=128, 
+                      
                       #do not give validation_data here or validation will be done twice
                       #validation_data=(val_data, val_labels),
+                      
+                      #always provide BinaryClassifierMetricsCallback before the EarlyStopping callback
                       callbacks=[bcm_callback, es_callback],
 )
 ```
