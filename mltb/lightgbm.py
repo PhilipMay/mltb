@@ -3,7 +3,7 @@
 from sklearn.metrics import f1_score, accuracy_score
 import numpy as np
 
-def lightgbm_multi_class_f1_score_factory(num_classes, average):
+def multi_class_f1_score_factory(num_classes, average):
     """Factory for LightGBM multi class F1-score function.
 
     Parameters
@@ -28,16 +28,16 @@ def lightgbm_multi_class_f1_score_factory(num_classes, average):
 
     eval_name = 'f1_' + average
 
-    def lightgbm_multi_class_f1_score(y_pred, data):
+    def multi_class_f1_score(y_pred, data):
         y_true = data.get_label()
         y_pred = y_pred.reshape((num_classes, -1))
         y_pred = np.transpose(y_pred)
         y_pred = np.argmax(y_pred, axis=1)
         return eval_name, f1_score(y_true, y_pred, average=average), True
 
-    return lightgbm_multi_class_f1_score
+    return multi_class_f1_score
 
-def lightgbm_multi_class_accuracy_score_factory(num_classes):
+def multi_class_accuracy_score_factory(num_classes):
     """Factory for LightGBM multi class accuracy-score function.
 
     Parameters
@@ -51,11 +51,11 @@ def lightgbm_multi_class_accuracy_score_factory(num_classes):
     * `LightGBM Training API: <https://lightgbm.readthedocs.io/en/latest/Python-API.html#training-api>`
     """
 
-    def lightgbm_multi_class_accuracy_score(y_pred, data):
+    def multi_class_accuracy_score(y_pred, data):
         y_true = data.get_label()
         y_pred = y_pred.reshape((num_classes, -1))
         y_pred = np.transpose(y_pred)
         y_pred = np.argmax(y_pred, axis=1)
         return 'accuracy', accuracy_score(y_true, y_pred), True
 
-    return lightgbm_multi_class_accuracy_score
+    return multi_class_accuracy_score
