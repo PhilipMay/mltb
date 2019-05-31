@@ -17,5 +17,4 @@ best, trials = fmin(objective,
     filename='trials_file')
 
 print(best)
-
 print(trials.trials)
