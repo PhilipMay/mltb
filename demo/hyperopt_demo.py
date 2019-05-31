@@ -16,5 +16,5 @@ best, trials = fmin(objective,
     max_evals=100,
     filename='trials_file')
 
-print(best)
-print(trials.trials)
+print('best:', best)
+print('number of trials:', len(trials.trials))

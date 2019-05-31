@@ -31,8 +31,24 @@ best, trials = fmin(objective,
     max_evals=100,
     filename='trials_file')
 
-print(best)
-print(trials.trials)
+print('best:', best)
+print('number of trials:', len(trials.trials))
+```
+
+Output of first run:
+```
+No trials file "trials_file" found. Created new trials object.
+100%|██████████| 100/100 [00:00<00:00, 338.61it/s, best loss: 0.0007185087453453681]
+best: {'x': 0.026805013436769026}
+number of trials: 100
+```
+
+Output of second run:
+```
+100 evals loaded from trials file "trials_file".
+100%|██████████| 100/100 [00:00<00:00, 219.65it/s, best loss: 0.00012259809712488858]
+best: {'x': 0.011072402500130158}
+number of trials: 200
 ```
 
 ## Module: keras
