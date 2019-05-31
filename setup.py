@@ -1,11 +1,11 @@
 import setuptools
 
-with open("README.md", "r") as fh:
+with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="mltb",
-    version="0.1.dev1",
+    version="0.1",
     maintainer="Philip May",
     author="Philip May",
     author_email="pm@eniak.de",
