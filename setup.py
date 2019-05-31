@@ -22,7 +22,7 @@ setuptools.setup(
         'matplotlib',
         'tqdm',
     ],
-    keywords='keras metric',
+    keywords='keras metric hyperopt lightgbm plot visualisation',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Education',
