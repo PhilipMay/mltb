@@ -1,24 +1,38 @@
 # Machine Learning Tool Box
 This is the machine learning tool box. A collection of userful machine learning tools intended for reuse and extension.
 The toolbox contains the following modules:
+* hyperopt - Hyperopt tool to save and restart evaluations
 * keras - Keras callback for various metrics and various other Keras tools
 * lightgbm - metric tool functions for LightGBM
 * metrics - several metric implementations 
 * plot - plot and visualisation tools
 * tools - various (i.a. statistical) tools
 
-## Module: lightgbm
-This module implements metric functions that are not included in LightGBM. 
-At the moment this is the F1- and accuracy-score for binary and multi class problems.
+## Module: hyperopt
+This module contains a tool function to save and restart Hyperopt evaluations.
+This is done by saving and loading the ``hyperopt.Trials`` objects.
 The usage looks like this:
 ```
-bst = lgb.train(param, 
-                train_data, 
-                valid_sets=[validation_data]
-                early_stopping_rounds=10,
-                evals_result=evals_result,
-                feval=mltb.lightgbm.multi_class_f1_score_factory(num_classes, 'macro'),
-               )
+from mltb.hyperopt import fmin
+from hyperopt import tpe, hp, STATUS_OK
+
+
+def objective(x):
+    return {
+        'loss': x ** 2,
+        'status': STATUS_OK,
+        'other_stuff': {'type': None, 'value': [0, 1, 2]},
+        }
+
+
+best, trials = fmin(objective,
+    space=hp.uniform('x', -10, 10),
+    algo=tpe.suggest,
+    max_evals=100,
+    filename='trials_file')
+
+print(best)
+print(trials.trials)
 ```
 
 ## Module: keras
@@ -41,4 +55,18 @@ history = network.fit(train_data, train_labels,
                       #always provide BinaryClassifierMetricsCallback before the EarlyStopping callback
                       callbacks=[bcm_callback, es_callback],
 )
+```
+
+## Module: lightgbm
+This module implements metric functions that are not included in LightGBM. 
+At the moment this is the F1- and accuracy-score for binary and multi class problems.
+The usage looks like this:
+```
+bst = lgb.train(param, 
+                train_data, 
+                valid_sets=[validation_data]
+                early_stopping_rounds=10,
+                evals_result=evals_result,
+                feval=mltb.lightgbm.multi_class_f1_score_factory(num_classes, 'macro'),
+               )
 ```
