@@ -12,7 +12,7 @@ setuptools.setup(
     description="Machine Learning Tool Box",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/PhilipMay/mltb/tree/master/mltb",
+    url="https://github.com/PhilipMay/mltb",
     packages=setuptools.find_packages(),
     python_requires='>=3.6',
     install_requires=[
