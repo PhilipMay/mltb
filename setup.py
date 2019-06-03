@@ -21,6 +21,7 @@ setuptools.setup(
         'keras',
         'matplotlib',
         'tqdm',
+        'shap',
     ],
     keywords='keras metric hyperopt lightgbm plot visualisation',
     classifiers=[
