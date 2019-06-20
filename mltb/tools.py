@@ -3,6 +3,12 @@ import itertools
 import sys
 from tqdm import tqdm
 from scipy import stats
+from sklearn.datasets.base import _fetch_remote
+from sklearn.datasets.base import RemoteFileMetadata
+import os
+import tarfile
+import shutil
+
 
 def multi_param_call(function, param_dict, iterations, verbose=1):
     """Call function multiple times and return dict with results.
@@ -87,3 +93,40 @@ def ttest_combinations(values_dict):
         key_1 = key_pair[1]
         result[key_pair] = stats.ttest_ind(values_dict[key_0], values_dict[key_1])[1]
     return result
+
+
+def download_file(download_url, sha256_hash, target_file, target_dir=None, untar=False):
+    if target_dir is None:
+        target_dir = os.path.join(os.path.expanduser('~'), '.mltb')
+
+    if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
+
+    target_dir_file = os.path.join(target_dir, target_file)
+
+    if not os.path.exists(target_dir_file):
+        print('Downloading file "{}" from "{}".'.format(target_file, download_url))
+        rfm = RemoteFileMetadata(
+            filename=target_file,
+            url=download_url,
+            checksum=sha256_hash)
+
+        _fetch_remote(rfm, target_dir)
+
+    if untar and tarfile.is_tarfile(target_dir_file):
+        with tarfile.open(target_dir_file) as tar_file:
+            try:
+                tar_file.extractall(target_dir)
+            except:
+
+                #Return True if path refers to an existing path or an open file descriptor.
+                if os.path.exists(target_dir):
+                    if os.path.isfile(target_dir):
+                        os.remove(target_dir)
+                    else:
+                        shutil.rmtree(target_dir)
+
+                raise
+        
+    return target_dir_file
+
