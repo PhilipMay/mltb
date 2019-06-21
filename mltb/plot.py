@@ -104,7 +104,7 @@ def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None, vert=True
 
 def boxplot_dict(values_dict, title=None, xlabel=None, ylabel=None, vert=True):
     """Create boxplot form dictionary.
-    
+
     This function does not call `matplotlib.pyplot.plot()`.
     
     Parameters
@@ -131,3 +131,14 @@ def boxplot_dict(values_dict, title=None, xlabel=None, ylabel=None, vert=True):
         labels.append(key)
     
     boxplot(values, labels=labels, title=title, xlabel=xlabel, ylabel=ylabel, vert=vert)
+
+
+def save_last_figure(filename):
+    """Saves the last plot.
+
+    Parameters
+    ----------
+    filename : str or PathLike or file-like object
+        Filename to save the image.
+    """
+    plt.savefig(filename, bbox_inches='tight')
