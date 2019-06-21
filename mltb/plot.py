@@ -8,6 +8,7 @@ def twin_axes_timeseries_plot(values_1, label_1, values_2, label_2,
     """Create twin axes timeseries plot.
     
     Plots two different timeseries curves in one diagram but two different y-axes.
+    This function does not call `matplotlib.pyplot.plot()`.
 
     Parameters
     ----------
@@ -59,12 +60,12 @@ def twin_axes_timeseries_plot(values_1, label_1, values_2, label_2,
     # see https://matplotlib.org/users/tight_layout_guide.html
     fig.tight_layout() 
 
-    plt.show()
 
 def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None, vert=True):
-    """Create boxplot.
-    
-    Prints one or more boxplots in a single diagram.
+    """Prints one or more boxplots in a single diagram.
+
+    This function does not call `matplotlib.pyplot.plot()`.
+
 
     Parameters
     ----------
@@ -100,10 +101,11 @@ def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None, vert=True
 
     plt.xticks(rotation=90)
 
-    plt.show()
 
 def boxplot_dict(values_dict, title=None, xlabel=None, ylabel=None, vert=True):
     """Create boxplot form dictionary.
+    
+    This function does not call `matplotlib.pyplot.plot()`.
     
     Parameters
     ----------
