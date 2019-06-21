@@ -1,4 +1,6 @@
 [![PyPI version](https://badge.fury.io/py/mltb.svg)](https://badge.fury.io/py/mltb)
+[![License](https://img.shields.io/github/license/philipmay/mltb.svg)](https://github.com/PhilipMay/mltb/blob/master/LICENSE)
+
 
 # Machine Learning Tool Box
 This is the machine learning tool box. A collection of userful machine learning tools intended for reuse and extension.
