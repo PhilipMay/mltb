@@ -3,6 +3,8 @@ import itertools
 import sys
 from tqdm import tqdm
 from scipy import stats
+import joblib
+
 
 def multi_param_call(function, param_dict, iterations, verbose=1):
     """Call function multiple times and return dict with results.
@@ -59,6 +61,7 @@ def multi_param_call(function, param_dict, iterations, verbose=1):
         pbar.close()
     return result
 
+
 def ttest_combinations(values_dict):
     """Do a t-test on values in a dict and compute the p-value.
 
@@ -87,3 +90,20 @@ def ttest_combinations(values_dict):
         key_1 = key_pair[1]
         result[key_pair] = stats.ttest_ind(values_dict[key_0], values_dict[key_1])[1]
     return result
+
+
+def save_data_list(data, filename):
+    data_list = []
+
+    try:
+        data_list = joblib.load(filename)
+    except FileNotFoundError:
+        pass
+
+    data_list.append(data)
+    print('Saving data list of lenth {}.'.format(len(data_list)))
+    joblib.dump(data_list, filename, compress=('gzip', 3))
+
+
+def load_data_list(filename):
+    return joblib.load(filename)
