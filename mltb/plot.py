@@ -136,6 +136,8 @@ def boxplot_dict(values_dict, title=None, xlabel=None, ylabel=None, vert=True):
 def save_last_figure(filename):
     """Saves the last plot.
 
+    For jupyter notebooks this has to be called in the same cell that created the plot.
+
     Parameters
     ----------
     filename : str or PathLike or file-like object
