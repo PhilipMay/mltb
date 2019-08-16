@@ -97,7 +97,12 @@ def boxplot(values, labels=None, title=None, xlabel=None, ylabel=None, vert=True
 
     ax.boxplot(values, labels=labels, vert=vert)
 
-    plt.grid(b=True, axis='y', linestyle='--')
+    if vert:
+        grid_axis='y'
+    else:
+        grid_axis='x'
+
+    plt.grid(b=True, axis=grid_axis, linestyle='--')
 
     plt.xticks(rotation=90)
 
