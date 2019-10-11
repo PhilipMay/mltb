@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="mltb",
-    version="0.2.dev1",
+    version="0.2.dev2",
     maintainer="Philip May",
     author="Philip May",
     author_email="pm@eniak.de",
@@ -16,9 +16,8 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     python_requires='>=3.6',
     install_requires=[
-        'sklearn', 
-        'numpy', 
-        'keras',
+        'sklearn',
+        'numpy',
         'matplotlib',
         'tqdm',
         'shap',
