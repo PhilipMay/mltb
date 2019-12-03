@@ -2,7 +2,9 @@ import tensorflow as tf
 
 def set_gpu_mem_growth():
     """
-    Only grow the memory usage as is needed by the process
+    Only grow the memory usage as is needed by the process.
+
+    This code is for tensorflow 2. It does not work with tensorflow 1.
 
     See Also
     --------
