@@ -149,5 +149,4 @@ def binary_class_average_precision_score(y_pred, data):
     * `LightGBM Training API: <https://lightgbm.readthedocs.io/en/latest/Python-API.html#training-api>`
     """
     y_true = data.get_label()
-    y_pred = np.round(y_pred)
     return 'average-precision', average_precision_score(y_true, y_pred), True
