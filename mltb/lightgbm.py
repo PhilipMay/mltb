@@ -1,6 +1,6 @@
 """LightGBM tools."""
 
-from sklearn.metrics import f1_score, accuracy_score
+from sklearn.metrics import f1_score, accuracy_score, average_precision_score
 import numpy as np
 
 
@@ -121,3 +121,33 @@ def binary_class_accuracy_score(y_pred, data):
     y_true = data.get_label()
     y_pred = np.round(y_pred)
     return 'accuracy', accuracy_score(y_true, y_pred), True
+
+
+def binary_class_average_precision_score(y_pred, data):
+    """LightGBM binary class average-precision function.
+
+    Parameters
+    ----------
+    y_pred
+        LightGBM predictions.
+    data
+        LightGBM ``'Dataset'``.
+
+    Returns
+    -------
+    (eval_name, eval_result, is_higher_better)
+        ``'eval_name'`` : string
+            is always 'average-precision' - the name of the metric
+        ``'eval_result'`` : float
+            is the result of the metric
+         ``'is_higher_better'`` : bool
+            is always 'True' because higher average-precision score is better
+
+    See Also
+    --------
+    * `sklearn.average_precision_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html>`
+    * `LightGBM Training API: <https://lightgbm.readthedocs.io/en/latest/Python-API.html#training-api>`
+    """
+    y_true = data.get_label()
+    y_pred = np.round(y_pred)
+    return 'average-precision', average_precision_score(y_true, y_pred), True
