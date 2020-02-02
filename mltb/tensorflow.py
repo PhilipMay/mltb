@@ -1,5 +1,6 @@
 import tensorflow as tf
 
+
 def set_gpu_mem_growth():
     """
     Only grow the memory usage as is needed by the process.
