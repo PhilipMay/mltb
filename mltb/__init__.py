@@ -5,4 +5,4 @@ from . import plot
 from . import shap
 from . import tools
 
-__version__ = '0.2.dev2'
+__version__ = '0.3'
