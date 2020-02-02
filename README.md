@@ -6,7 +6,7 @@
 This is the machine learning tool box. A collection of userful machine learning tools intended for reuse and extension.
 The toolbox contains the following modules:
 * hyperopt - Hyperopt tool to save and restart evaluations
-* keras - Keras callback for various metrics and various other Keras tools
+* keras - Keras (tf.keras) callback for various metrics and various other Keras tools
 * lightgbm - metric tool functions for LightGBM
 * metrics - several metric implementations
 * plot - plot and visualisation tools
@@ -69,7 +69,7 @@ bst = lgb.train(param,
                )
 ```
 
-## Module: keras
+## Module: keras (for tf.keras)
 This module provides ROC-AUC- and F1-metrics (which are not included in Keras)
 in form of a callback.
 Because the callback adds these values to the internal `logs` dictionary it is
