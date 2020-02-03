@@ -19,8 +19,12 @@ setuptools.setup(
         'sklearn',
         'numpy',
         'matplotlib',
+        'pandas',
         'tqdm',
         'shap',
+        'hyperopt',
+        'scipy',
+        'joblib',
     ],
     keywords='keras metric hyperopt lightgbm plot visualisation',
     classifiers=[
