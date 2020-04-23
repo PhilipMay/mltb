@@ -71,20 +71,58 @@ bst = lgb.train(param,
 
 ## Module: keras (for tf.keras)
 
+
+### BinaryClassifierMetricsCallback
+
 This module provides custom metrics in form of a callback.
-Here's the list of available metrics:
+Because the callback adds these values to the internal `logs` dictionary it is
+possible to use the `EarlyStopping` callback to do early stopping on these metrics.
+
+#### Parameters
+
+| Parameter     | Description | Type    | Default values  |
+| ------------- | ----------- | ------- | --------------- |
+| val_data      | Validation input  | list |
+| val_label     | Validation output  | list      |    |
+| pos_label     | Which index is the positive label  | Optional[int]      |    1 |
+| metrics       | List of supported metric names or custom metric functions  | List[Union[str, Callable]] |  ['val_roc_auc', 'val_average_precision', 'val_f1', 'val_acc'] | 
+
+#### Available metrics
 
 - **val_roc_auc** : ROC-AUC
 - **val_f1** : F1-score
+- **val_acc**: Accuracy
+- **val_average_precision**: Average precision
 
-This module provides ROC-AUC- and F1-metrics (which are not included in Keras)
-in form of a callback.
-Because the callback adds these values to the internal `logs` dictionary it is
-possible to use the `EarlyStopping` callback
-to do early stopping on these metrics. The usage looks like this:
-```
+
+
+ The usage looks like this:
+```python
 bcm_callback = mltb.keras.BinaryClassifierMetricsCallback(val_data, val_labels)
 es_callback = callbacks.EarlyStopping(monitor='val_roc_auc', patience=5,  mode='max')
+
+history = network.fit(train_data, train_labels,
+                      epochs=1000,
+                      batch_size=128,
+
+                      #do not give validation_data here or validation will be done twice
+                      #validation_data=(val_data, val_labels),
+
+                      #always provide BinaryClassifierMetricsCallback before the EarlyStopping callback
+                      callbacks=[bcm_callback, es_callback],
+)
+```
+
+You can also define your own custom metric:
+
+```python
+def custom_average_recall_score(y_true, y_pred, pos_label):
+    rounded_pred = np.rint(y_pred)
+    return sklearn.metrics.recall_score(y_true, rounded_pred, pos_label)
+
+
+bcm_callback = mltb.keras.BinaryClassifierMetricsCallback(val_data, val_labels,metrics=[custom_average_recall_score])
+es_callback = callbacks.EarlyStopping(monitor='custom_average_recall_score', patience=5,  mode='max')
 
 history = network.fit(train_data, train_labels,
                       epochs=1000,

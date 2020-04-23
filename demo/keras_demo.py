@@ -2,6 +2,7 @@ from tensorflow.keras.datasets import mnist
 from tensorflow.keras import models
 from tensorflow.keras import layers
 from tensorflow.keras import callbacks
+import sklearn.metrics
 
 
 import numpy as np
@@ -49,11 +50,40 @@ network.add(layers.Dense(1, activation='sigmoid'))
 network.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
 
 mltb_callback = mltb.keras.BinaryClassifierMetricsCallback(test_images, test_5_labels, 1)
-es = callbacks.EarlyStopping(monitor='val_roc_auc', patience=5,  mode='max')
+es = callbacks.EarlyStopping(monitor='val_roc_auc', patience=5, mode='max')
 
 history = network.fit(train_images, train_5_labels, verbose=1, epochs=400,
                       batch_size=128,
-                      #validation_data=(test_images, test_5_labels),
+                      # validation_data=(test_images, test_5_labels),
+                      callbacks=[mltb_callback, es],
+                      class_weight={0: 1.0, 1: 9.0},
+                      )
+
+print(history.history)
+
+# Example with only the val_roc_auc
+mltb_callback = mltb.keras.BinaryClassifierMetricsCallback(test_images, test_5_labels, 1, metrics=['val_roc_auc'])
+history = network.fit(train_images, train_5_labels, verbose=1, epochs=400,
+                      batch_size=128,
+                      # validation_data=(test_images, test_5_labels),
+                      callbacks=[mltb_callback, es],
+                      class_weight={0: 1.0, 1: 9.0},
+                      )
+
+print(history.history)
+
+
+# Example with a custom metric
+def custom_average_recall_score(y_true, y_pred, pos_label):
+    rounded_pred = np.rint(y_pred)
+    return sklearn.metrics.recall_score(y_true, rounded_pred, pos_label)
+
+
+mltb_callback = mltb.keras.BinaryClassifierMetricsCallback(test_images, test_5_labels, 1,
+                                                           metrics=['val_roc_auc', custom_average_recall_score])
+history = network.fit(train_images, train_5_labels, verbose=1, epochs=400,
+                      batch_size=128,
+                      # validation_data=(test_images, test_5_labels),
                       callbacks=[mltb_callback, es],
                       class_weight={0: 1.0, 1: 9.0},
                       )
