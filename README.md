@@ -70,6 +70,13 @@ bst = lgb.train(param,
 ```
 
 ## Module: keras (for tf.keras)
+
+This module provides custom metrics in form of a callback.
+Here's the list of available metrics:
+
+- **val_roc_auc** : ROC-AUC
+- **val_f1** : F1-score
+
 This module provides ROC-AUC- and F1-metrics (which are not included in Keras)
 in form of a callback.
 Because the callback adds these values to the internal `logs` dictionary it is
@@ -77,7 +84,7 @@ possible to use the `EarlyStopping` callback
 to do early stopping on these metrics. The usage looks like this:
 ```
 bcm_callback = mltb.keras.BinaryClassifierMetricsCallback(val_data, val_labels)
-es_callback = callbacks.EarlyStopping(monitor='roc_auc', patience=5,  mode='max')
+es_callback = callbacks.EarlyStopping(monitor='val_roc_auc', patience=5,  mode='max')
 
 history = network.fit(train_data, train_labels,
                       epochs=1000,

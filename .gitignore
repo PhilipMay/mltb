@@ -6,3 +6,6 @@ build
 .spyproject
 .idea
 .DS_Store
+
+# Virtual env
+venv/
