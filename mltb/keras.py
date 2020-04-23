@@ -24,31 +24,31 @@ class BinaryClassifierMetricsCallback(keras.callbacks.Callback):
         self.val_labels = val_labels
         self.pos_label = pos_label
 
-    def on_epoch_end(self, batch, logs={}):
+    def on_epoch_end(self, batch, logs=None):
         logs = logs or {}
         predict_results = self.model.predict(self.val_data)
 
         round_predict_results = np.rint(predict_results)
 
-        roc_auc = sklearn.metrics.roc_auc_score(self.val_labels,
+        val_roc_auc = sklearn.metrics.roc_auc_score(self.val_labels,
                                                 predict_results)
-        logs["roc_auc"] = roc_auc
+        logs["val_roc_auc"] = val_roc_auc
 
-        average_precision = sklearn.metrics.average_precision_score(
+        val_average_precision = sklearn.metrics.average_precision_score(
                 self.val_labels, predict_results,
                 pos_label=self.pos_label)
 
-        logs['average_precision'] = average_precision
+        logs['val_average_precision'] = val_average_precision
 
-        f1 = sklearn.metrics.f1_score(self.val_labels, round_predict_results,
+        val_f1 = sklearn.metrics.f1_score(self.val_labels, round_predict_results,
                                       pos_label=self.pos_label)
-        logs["f1"] = f1
+        logs["val_f1"] = val_f1
 
         accuracy = sklearn.metrics.accuracy_score(self.val_labels,
                                                   round_predict_results)
-        logs["accuracy"] = accuracy
+        logs["val_acc"] = accuracy
 
-        best_f1, best_f1_threshold = metrics.best_f1_score(
+        val_best_f1, val_best_f1_threshold = metrics.best_f1_score(
                 self.val_labels, predict_results, self.pos_label)
-        logs["best_f1"] = best_f1
-        logs["best_f1_threshold"] = best_f1_threshold
+        logs["val_best_f1"] = val_best_f1
+        logs["val_best_f1_threshold"] = val_best_f1_threshold
