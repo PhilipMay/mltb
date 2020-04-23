@@ -93,6 +93,7 @@ possible to use the `EarlyStopping` callback to do early stopping on these metri
 - **val_f1** : F1-score
 - **val_acc**: Accuracy
 - **val_average_precision**: Average precision
+- **val_mcc**: Matthews correlation coefficient
 
 
 
