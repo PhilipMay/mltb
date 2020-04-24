@@ -61,8 +61,8 @@ history = network.fit(train_images, train_5_labels, verbose=1, epochs=400,
 
 print(history.history)
 
-# Example with only the val_roc_auc
-mltb_callback = mltb.keras.BinaryClassifierMetricsCallback(test_images, test_5_labels, 1, metrics=['val_roc_auc'])
+# Example with specific metrics
+mltb_callback = mltb.keras.BinaryClassifierMetricsCallback(test_images, test_5_labels, 1, metrics=['val_roc_auc','val_mcc'])
 history = network.fit(train_images, train_5_labels, verbose=1, epochs=400,
                       batch_size=128,
                       # validation_data=(test_images, test_5_labels),

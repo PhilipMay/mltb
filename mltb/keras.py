@@ -28,6 +28,11 @@ class DefaultMetrics:
         round_y_pred = np.rint(y_pred)
         return sklearn.metrics.accuracy_score(y_true, round_y_pred)
 
+    @staticmethod
+    def val_mcc(y_true, y_pred, pos_label):
+        round_y_pred = np.rint(y_pred)
+        return sklearn.metrics.matthews_corrcoef(y_true, round_y_pred)
+
 
 DEFAULT_METRICS_BY_NAME = {function_name: getattr(DefaultMetrics, function_name) for function_name in
                            dir(DefaultMetrics) if not function_name.startswith('__')}
