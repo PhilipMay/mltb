@@ -24,10 +24,10 @@ def multi_class_f1_score_factory(num_classes, average):
     * `sklearn.metrics.f1_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html>`
     * `LightGBM Training API: <https://lightgbm.readthedocs.io/en/latest/Python-API.html#training-api>`
     """
-    if average != 'macro' and average != 'micro':
+    if average != "macro" and average != "micro":
         raise ValueError("average should be 'macro' or 'micro'")
 
-    eval_name = 'f1_' + average
+    eval_name = "f1_" + average
 
     def multi_class_f1_score(y_pred, data):
         y_true = data.get_label()
@@ -66,7 +66,7 @@ def binary_class_f1_score(y_pred, data):
     """
     y_true = data.get_label()
     y_pred = np.round(y_pred)
-    return 'f1', f1_score(y_true, y_pred), True
+    return "f1", f1_score(y_true, y_pred), True
 
 
 def multi_class_accuracy_score_factory(num_classes):
@@ -79,7 +79,7 @@ def multi_class_accuracy_score_factory(num_classes):
 
     See Also
     --------
-    * `sklearn.metrics.accuracy_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html>`
+    * `sklearn.metrics.accuracy_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html>`  # noqa: E501
     * `LightGBM Training API: <https://lightgbm.readthedocs.io/en/latest/Python-API.html#training-api>`
     """
 
@@ -88,7 +88,7 @@ def multi_class_accuracy_score_factory(num_classes):
         y_pred = y_pred.reshape((num_classes, -1))
         y_pred = np.transpose(y_pred)
         y_pred = np.argmax(y_pred, axis=1)
-        return 'accuracy', accuracy_score(y_true, y_pred), True
+        return "accuracy", accuracy_score(y_true, y_pred), True
 
     return multi_class_accuracy_score
 
@@ -115,12 +115,12 @@ def binary_class_accuracy_score(y_pred, data):
 
     See Also
     --------
-    * `sklearn.metrics.accuracy_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html>`
+    * `sklearn.metrics.accuracy_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html>`  # noqa: E501
     * `LightGBM Training API: <https://lightgbm.readthedocs.io/en/latest/Python-API.html#training-api>`
     """
     y_true = data.get_label()
     y_pred = np.round(y_pred)
-    return 'accuracy', accuracy_score(y_true, y_pred), True
+    return "accuracy", accuracy_score(y_true, y_pred), True
 
 
 def binary_class_average_precision_score(y_pred, data):
@@ -145,8 +145,8 @@ def binary_class_average_precision_score(y_pred, data):
 
     See Also
     --------
-    * `sklearn.average_precision_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html>`
+    * `sklearn.average_precision_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html>`  # noqa: E501
     * `LightGBM Training API: <https://lightgbm.readthedocs.io/en/latest/Python-API.html#training-api>`
     """
     y_true = data.get_label()
-    return 'average-precision', average_precision_score(y_true, y_pred), True
+    return "average-precision", average_precision_score(y_true, y_pred), True

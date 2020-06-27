@@ -4,17 +4,18 @@ import joblib
 import hyperopt
 
 
-def fmin(fn,
-         space,
-         algo,
-         max_evals,
-         filename,
-         rstate=None,
-         pass_expr_memo_ctrl=None,
-         verbose=0,
-         max_queue_len=1,
-         show_progressbar=True,
-        ):
+def fmin(
+    fn,
+    space,
+    algo,
+    max_evals,
+    filename,
+    rstate=None,
+    pass_expr_memo_ctrl=None,
+    verbose=0,
+    max_queue_len=1,
+    show_progressbar=True,
+):
     """Minimize a function with hyperopt and save results to disk for later restart.
 
     Parameters
@@ -86,19 +87,20 @@ def fmin(fn,
         trials = hyperopt.Trials()
         print('No trials file "{}" found. Created new trials object.'.format(filename))
 
-    result = hyperopt.fmin(fn,
-                  space,
-                  algo,
-                  max_evals,
-                  trials=trials,
-                  rstate=rstate,
-                  pass_expr_memo_ctrl=pass_expr_memo_ctrl,
-                  verbose=verbose,
-                  return_argmin=True,
-                  max_queue_len=max_queue_len,
-                  show_progressbar=show_progressbar,
-                )
+    result = hyperopt.fmin(
+        fn,
+        space,
+        algo,
+        max_evals,
+        trials=trials,
+        rstate=rstate,
+        pass_expr_memo_ctrl=pass_expr_memo_ctrl,
+        verbose=verbose,
+        return_argmin=True,
+        max_queue_len=max_queue_len,
+        show_progressbar=show_progressbar,
+    )
 
-    joblib.dump(trials, filename, compress=('gzip', 3))
+    joblib.dump(trials, filename, compress=("gzip", 3))
 
     return result, trials
