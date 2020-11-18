@@ -163,9 +163,7 @@ class OptunaMLflow(object):
     def __enter__(self):
         print('enter')
 
-        # TODO: implement this
-        # it seems that directory must be the folder
-        # where .git is located - we should apply a search
+        # TODO: move to own function
         if self._enforce_clean_git:
             path = _get_main_file()
             if os.path.isfile(path):
