@@ -1,9 +1,13 @@
-import mlflow
 import logging
+import optuna
 import platform
 import textwrap
 import traceback
 import warnings
+
+import mlflow
+from mlflow.tracking.context.default_context import _get_user
+
 
 _logger = logging.getLogger(__name__)
 
@@ -78,9 +82,10 @@ class OptunaMLflow(object):
                 exc_info=True,
             )
 
-    def set_tag(self, key, value):
+    def set_tag(self, key, value, optuna_log=True):
         print('set_tag', value)
-        self._trial.set_user_attr(key, value)
+        if optuna_log:
+            self._trial.set_user_attr(key, value)
         value = str(value)  # make sure it is a string
         if len(value) > self._max_mlflow_tag_length:
             value = textwrap.shorten(value, self._max_mlflow_tag_length)
@@ -92,10 +97,11 @@ class OptunaMLflow(object):
                 exc_info=True,
             )
 
-    def set_tags(self, tags):
+    def set_tags(self, tags, optuna_log=True):
         print('set_tags', tags)
         for key, value in tags.items():
-            self._trial.set_user_attr(key, value)
+            if optuna_log:
+                self._trial.set_user_attr(key, value)
             value = str(value)  # make sure it is a string
             if len(value) > self._max_mlflow_tag_length:
                 tags[key] = textwrap.shorten(value, self._max_mlflow_tag_length)
@@ -120,6 +126,9 @@ class OptunaMLflow(object):
                 run_name=digits_format_string.format(self._trial.number, step),
                 nested=True
             ):
+                # overwrite user with user + hostname
+                self.set_tag('mlflow.user', self._get_user_hostname(), optuna_log=False)
+
                 self.log_metrics(metrics, step=step, optuna_log=False)
         except Exception as e:
             _logger.error(
@@ -131,14 +140,17 @@ class OptunaMLflow(object):
     # util functions
     #####################################
 
-    def get_hostname(self):
+    def _get_user_hostname(self):
+        # TODO: user caching here?
+        user = 'unknown'
         hostname = 'unknown'
         try:
+            user = _get_user()
             hostname = platform.node()
         except Exception as e:
-            warnings.warn('Exception while getting the hostname! {}'
+            warnings.warn('Exception while getting user and hostname! {}'
                           .format(e), RuntimeWarning)
-        return hostname
+        return '{}@{}'.format(user, hostname)
 
     #####################################
     # context manager functions
@@ -156,7 +168,8 @@ class OptunaMLflow(object):
             digits_format_string = "{{:0{}d}}".format(self._nun_name_digits)
             mlflow.start_run(run_name=digits_format_string.format(self._trial.number))
 
-            self.set_tag('hostname', self.get_hostname())
+            # overwrite user with user + hostname
+            self.set_tag('mlflow.user', self._get_user_hostname())
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
@@ -168,7 +181,7 @@ class OptunaMLflow(object):
         if exc_type is None:  # no exception
 
             # extract tags from trial
-            tags  = {}
+            tags = {}
             # Set direction and convert it to str and remove the common prefix.
             study_direction = self._trial.study.direction
             if isinstance(study_direction, optuna._study_direction.StudyDirection):
