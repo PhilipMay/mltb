@@ -4,11 +4,12 @@ import platform
 import textwrap
 import traceback
 import warnings
-#import git
-#import os
+import git
+import os
 
 import mlflow
 from mlflow.tracking.context.default_context import _get_user
+from mlflow.tracking.context.default_context import _get_main_file
 
 
 _logger = logging.getLogger(__name__)
@@ -165,10 +166,13 @@ class OptunaMLflow(object):
         # TODO: implement this
         # it seems that directory must be the folder
         # where .git is located - we should apply a search
-        #if self._enforce_clean_git:
-        #    run_dir = os.path.dirname(__file__)
-        #    if git.repo.base.Repo(run_dir).is_dirty():
-        #        raise RuntimeError('Git repository is dirty!')
+        if self._enforce_clean_git:
+            path = _get_main_file()
+            if os.path.isfile(path):
+                path = os.path.dirname(path)
+            repo = git.Repo(path, search_parent_directories=True)
+            if repo.is_dirty():
+                raise RuntimeError('Git repository is dirty!')
 
         try:
             # This sets the tracking_uri for MLflow.
