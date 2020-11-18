@@ -6,6 +6,7 @@ build
 .spyproject
 .idea
 .DS_Store
+mlruns
 
 # Virtual env
 venv/
