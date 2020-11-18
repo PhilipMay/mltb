@@ -14,12 +14,12 @@ _logger = logging.getLogger(__name__)
 
 class OptunaMLflow(object):
 
-    def __init__(self, trial, tracking_uri, nun_name_digits=3):
+    def __init__(self, trial, tracking_uri, num_name_digits=3):
         self._trial = trial
         self._tracking_uri = tracking_uri
-        self._nun_name_digits = nun_name_digits
+        self._num_name_digits = num_name_digits
         self._max_mlflow_tag_length = 5000
-        self._fold_metrics = {}
+        self._iter_metrics = {}
 
     #####################################
     # MLflow wrapper functions
@@ -113,14 +113,14 @@ class OptunaMLflow(object):
                 exc_info=True,
             )
 
-    def log_fold(self, step, metrics):  # TODO: add params and tags?
-        print('log_fold', step, metrics)
+    def log_iter(self, step, metrics):  # TODO: add params and tags?
+        print('log_iter', step, metrics)
         for key, value in metrics.items():
-            value_list = self._fold_metrics.get(key, [])
+            value_list = self._iter_metrics.get(key, [])
             value_list.append(value)
-            self._fold_metrics[key] = value_list
-            self._trial.set_user_attr("{}_folds".format(key), value_list)
-        digits_format_string = "{{:0{0}d}}-{{:0{0}d}}".format(self._nun_name_digits)
+            self._iter_metrics[key] = value_list
+            self._trial.set_user_attr("{}_iter".format(key), value_list)
+        digits_format_string = "{{:0{0}d}}-{{:0{0}d}}".format(self._num_name_digits)
         try:
             with mlflow.start_run(
                 run_name=digits_format_string.format(self._trial.number, step),
@@ -165,7 +165,7 @@ class OptunaMLflow(object):
 
             mlflow.set_experiment(self._trial.study.study_name)
 
-            digits_format_string = "{{:0{}d}}".format(self._nun_name_digits)
+            digits_format_string = "{{:0{}d}}".format(self._num_name_digits)
             mlflow.start_run(run_name=digits_format_string.format(self._trial.number))
 
             # overwrite user with user + hostname

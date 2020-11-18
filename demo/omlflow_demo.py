@@ -5,13 +5,13 @@ from mltb.omlflow import OptunaMLflow
 
 
 def objective(trial):
-    with OptunaMLflow(trial, "", nun_name_digits=5) as om:
+    with OptunaMLflow(trial, "", num_name_digits=5) as om:
         results = []
         for i in range(3):
             x = trial.suggest_uniform('x', -10, 10)
             om.log_param('x', x)
             result = (x - 2) ** 2
-            om.log_fold(i, {'x': result})
+            om.log_iter(i, {'x': result})
             results.append(result)
         result = np.mean(results)
         om.log_metric('result', result)
