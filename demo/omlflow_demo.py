@@ -5,7 +5,7 @@ from mltb.omlflow import OptunaMLflow
 
 
 def objective(trial):
-    with OptunaMLflow(trial, "", num_name_digits=5) as om:
+    with OptunaMLflow(trial, "", num_name_digits=5, enforce_clean_git=True) as om:
         results = []
         for i in range(3):
             x = trial.suggest_uniform('x', -10, 10)

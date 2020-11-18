@@ -4,6 +4,8 @@ import platform
 import textwrap
 import traceback
 import warnings
+#import git
+#import os
 
 import mlflow
 from mlflow.tracking.context.default_context import _get_user
@@ -14,10 +16,11 @@ _logger = logging.getLogger(__name__)
 
 class OptunaMLflow(object):
 
-    def __init__(self, trial, tracking_uri, num_name_digits=3):
+    def __init__(self, trial, tracking_uri, num_name_digits=3, enforce_clean_git=False):
         self._trial = trial
         self._tracking_uri = tracking_uri
         self._num_name_digits = num_name_digits
+        self._enforce_clean_git = enforce_clean_git
         self._max_mlflow_tag_length = 5000
         self._iter_metrics = {}
 
@@ -158,6 +161,15 @@ class OptunaMLflow(object):
 
     def __enter__(self):
         print('enter')
+
+        # TODO: implement this
+        # it seems that directory must be the folder
+        # where .git is located - we should apply a search
+        #if self._enforce_clean_git:
+        #    run_dir = os.path.dirname(__file__)
+        #    if git.repo.base.Repo(run_dir).is_dirty():
+        #        raise RuntimeError('Git repository is dirty!')
+
         try:
             # This sets the tracking_uri for MLflow.
             if self._tracking_uri is not None:
@@ -242,7 +254,3 @@ class OptunaMLflow(object):
         result = self._trial.suggest_uniform(name, low, high)
         self.log_param(name, result, optuna_log=False)
         return result
-
-
-# TODO: git dirty check: https://gitpython.readthedocs.io/en/stable/reference.html?highlight=dirty#git.repo.base.Repo.is_dirty
-# TODO: Finish nested metrics for crossvalidation or repeated training
