@@ -24,22 +24,13 @@ class OptunaMLflow(object):
         self._enforce_clean_git = enforce_clean_git
         self._max_mlflow_tag_length = 5000
         self._iter_metrics = {}
+        self._user_hostname = None
 
     #####################################
     # MLflow wrapper functions
     #####################################
 
-    def end_run(self, status):
-        try:
-            mlflow.end_run(status)
-        except Exception as e:
-            _logger.error(
-                "Exception raised during MLflow communication! Exception: {}".format(e),
-                exc_info=True,
-            )
-
     def log_metric(self, key, value, step=None):
-        print('log_metric', value)
         self._trial.set_user_attr(key, value)
         try:
             mlflow.log_metric(key, value, step=None)
@@ -50,7 +41,6 @@ class OptunaMLflow(object):
             )
 
     def log_metrics(self, metrics, step=None, optuna_log=True):
-        print('log_metrics', metrics)
         if optuna_log:
             for key, value in metrics.items():
                 self._trial.set_user_attr(key, value)
@@ -63,7 +53,6 @@ class OptunaMLflow(object):
             )
 
     def log_param(self, key, value, optuna_log=True):
-        print('log_param', value)
         if optuna_log:
             self._trial.set_user_attr(key, value)
         try:
@@ -75,7 +64,6 @@ class OptunaMLflow(object):
             )
 
     def log_params(self, params):
-        print('log_params', params)
         for key, value in params.items():
             self._trial.set_user_attr(key, value)
         try:
@@ -87,7 +75,6 @@ class OptunaMLflow(object):
             )
 
     def set_tag(self, key, value, optuna_log=True):
-        print('set_tag', value)
         if optuna_log:
             self._trial.set_user_attr(key, value)
         value = str(value)  # make sure it is a string
@@ -102,7 +89,6 @@ class OptunaMLflow(object):
             )
 
     def set_tags(self, tags, optuna_log=True):
-        print('set_tags', tags)
         for key, value in tags.items():
             if optuna_log:
                 self._trial.set_user_attr(key, value)
@@ -118,7 +104,6 @@ class OptunaMLflow(object):
             )
 
     def log_iter(self, step, metrics):  # TODO: add params and tags?
-        print('log_iter', step, metrics)
         for key, value in metrics.items():
             value_list = self._iter_metrics.get(key, [])
             value_list.append(value)
@@ -131,9 +116,18 @@ class OptunaMLflow(object):
                 nested=True
             ):
                 # overwrite user with user + hostname
-                self.set_tag('mlflow.user', self._get_user_hostname(), optuna_log=False)
+                self.set_tag("mlflow.user", self._get_user_hostname(), optuna_log=False)
 
                 self.log_metrics(metrics, step=step, optuna_log=False)
+        except Exception as e:
+            _logger.error(
+                "Exception raised during MLflow communication! Exception: {}".format(e),
+                exc_info=True,
+            )
+
+    def _end_run(self, status):
+        try:
+            mlflow.end_run(status)
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
@@ -145,24 +139,24 @@ class OptunaMLflow(object):
     #####################################
 
     def _get_user_hostname(self):
-        # TODO: user caching here?
-        user = 'unknown'
-        hostname = 'unknown'
-        try:
-            user = _get_user()
-            hostname = platform.node()
-        except Exception as e:
-            warnings.warn('Exception while getting user and hostname! {}'
-                          .format(e), RuntimeWarning)
-        return '{}@{}'.format(user, hostname)
+        if self._user_hostname is None:
+            user = "unknown"
+            hostname = "unknown"
+            try:
+                user = _get_user()
+                hostname = platform.node()
+            except Exception as e:
+                warnings.warn(
+                    "Exception while getting user and hostname! {}"
+                    .format(e), RuntimeWarning)
+            self._user_hostname = "{}@{}".format(user, hostname)
+        return self._user_hostname
 
     #####################################
     # context manager functions
     #####################################
 
     def __enter__(self):
-        print('enter')
-
         # TODO: move to own function
         if self._enforce_clean_git:
             path = _get_main_file()
@@ -170,10 +164,10 @@ class OptunaMLflow(object):
                 path = os.path.dirname(path)
             repo = git.Repo(path, search_parent_directories=True)
             if repo.is_dirty():
-                raise RuntimeError('Git repository is dirty!')
+                raise RuntimeError("Git repository is dirty!")
 
         try:
-            # This sets the tracking_uri for MLflow.
+            # set tracking_uri for MLflow
             if self._tracking_uri is not None:
                 mlflow.set_tracking_uri(self._tracking_uri)
 
@@ -183,7 +177,7 @@ class OptunaMLflow(object):
             mlflow.start_run(run_name=digits_format_string.format(self._trial.number))
 
             # overwrite user with user + hostname
-            self.set_tag('mlflow.user', self._get_user_hostname())
+            self.set_tag("mlflow.user", self._get_user_hostname())
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
@@ -205,21 +199,16 @@ class OptunaMLflow(object):
                 (k + "_distribution"): str(v) for (k, v) in self._trial.distributions.items()
             }
             tags.update(distributions)
-            self.set_tags(tags)
+            self.set_tags(tags, optuna_log=False)
 
-            self.end_run('FINISHED')
-            print('exit', type, '#', exc_value, '#', tb)
+            self._end_run("FINISHED")
         else:  # exception
-            print('Exception!', exc_type, '#', exc_value, '#', tb)
-            print(type(exc_type))
-            exc_text = ''.join(traceback.format_exception(exc_type, exc_value, tb))
-            self.set_tag('exception', exc_text)
+            exc_text = "".join(traceback.format_exception(exc_type, exc_value, tb))
+            self.set_tag("exception", exc_text)
             if exc_type is KeyboardInterrupt:
-                print('set KILLED')
-                self.end_run('KILLED')
+                self._end_run("KILLED")
             else:
-                print('set FAILED')
-                self.end_run('FAILED')
+                self._end_run("FAILED")
             return False
 
     #####################################
