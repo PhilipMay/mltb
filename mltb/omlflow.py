@@ -152,19 +152,20 @@ class OptunaMLflow(object):
             self._user_hostname = "{}@{}".format(user, hostname)
         return self._user_hostname
 
+    def _repo_is_dirty(self):
+        path = _get_main_file()
+        if os.path.isfile(path):
+            path = os.path.dirname(path)
+        return git.Repo(path, search_parent_directories=True)
+
     #####################################
     # context manager functions
     #####################################
 
     def __enter__(self):
-        # TODO: move to own function
-        if self._enforce_clean_git:
-            path = _get_main_file()
-            if os.path.isfile(path):
-                path = os.path.dirname(path)
-            repo = git.Repo(path, search_parent_directories=True)
-            if repo.is_dirty():
-                raise RuntimeError("Git repository is dirty!")
+        # check if GIT repo is clean
+        if self._enforce_clean_git and self._repo_is_dirty():
+            raise RuntimeError("Git repository is dirty!")
 
         try:
             # set tracking_uri for MLflow
