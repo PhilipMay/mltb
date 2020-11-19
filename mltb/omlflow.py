@@ -118,6 +118,8 @@ class OptunaMLflow(object):
                 # overwrite user with user + hostname
                 self.set_tag("mlflow.user", self._get_user_hostname(), optuna_log=False)
 
+                self.set_tag("process_id", os.getpid(), optuna_log=False)
+
                 self.log_metrics(metrics, step=step, optuna_log=False)
         except Exception as e:
             _logger.error(
@@ -179,6 +181,8 @@ class OptunaMLflow(object):
 
             # overwrite user with user + hostname
             self.set_tag("mlflow.user", self._get_user_hostname())
+
+            self.set_tag("process_id", os.getpid())
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
