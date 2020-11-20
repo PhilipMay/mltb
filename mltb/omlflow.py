@@ -103,7 +103,7 @@ class OptunaMLflow(object):
                 exc_info=True,
             )
 
-    def log_iter(self, step, metrics):  # TODO: add params and tags?
+    def log_iter(self, metrics, step):  # TODO: add params and tags?
         """"Log an iteration or fold as a nasted run."""
         for key, value in metrics.items():
             value_list = self._iter_metrics.get(key, [])

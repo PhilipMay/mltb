@@ -11,7 +11,7 @@ def objective(trial):
             x = trial.suggest_uniform('x', -10, 10)
             om.log_param('x', x)
             result = (x - 2) ** 2
-            om.log_iter(i, {'x': result})
+            om.log_iter({'x': result}, i)
             results.append(result)
         result = np.mean(results)
         om.log_metric('result', result)
