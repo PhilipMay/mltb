@@ -24,7 +24,7 @@ class OptunaMLflow(object):
         self._enforce_clean_git = enforce_clean_git
         self._max_mlflow_tag_length = 5000
         self._iter_metrics = {}
-        self._user_hostname = None
+        self._hostname = None
 
     #####################################
     # MLflow wrapper functions
@@ -115,11 +115,6 @@ class OptunaMLflow(object):
                 run_name=digits_format_string.format(self._trial.number, step),
                 nested=True
             ):
-                # overwrite user with user + hostname
-                self.set_tag("mlflow.user", self._get_user_hostname(), optuna_log=False)
-
-                self.set_tag("process_id", os.getpid(), optuna_log=False)
-
                 self.log_metrics(metrics, step=step, optuna_log=False)
         except Exception as e:
             _logger.error(
@@ -140,19 +135,17 @@ class OptunaMLflow(object):
     # util functions
     #####################################
 
-    def _get_user_hostname(self):
-        if self._user_hostname is None:
-            user = "unknown"
+    def _get_hostname(self):
+        if self._hostname is None:
             hostname = "unknown"
             try:
-                user = _get_user()
                 hostname = platform.node()
             except Exception as e:
                 warnings.warn(
-                    "Exception while getting user and hostname! {}"
+                    "Exception while getting hostname! {}"
                     .format(e), RuntimeWarning)
-            self._user_hostname = "{}@{}".format(user, hostname)
-        return self._user_hostname
+            self._hostname = hostname
+        return self._hostname
 
     def _repo_is_dirty(self):
         path = _get_main_file()
@@ -179,9 +172,8 @@ class OptunaMLflow(object):
             digits_format_string = "{{:0{}d}}".format(self._num_name_digits)
             mlflow.start_run(run_name=digits_format_string.format(self._trial.number))
 
-            # overwrite user with user + hostname
-            self.set_tag("mlflow.user", self._get_user_hostname())
-
+            # TODO: use set_tags with dict
+            self.set_tag("hostname", self._get_hostname())
             self.set_tag("process_id", os.getpid())
         except Exception as e:
             _logger.error(
