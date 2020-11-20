@@ -104,6 +104,7 @@ class OptunaMLflow(object):
             )
 
     def log_iter(self, step, metrics):  # TODO: add params and tags?
+        """"Log an iteration or fold as a nasted run."""
         for key, value in metrics.items():
             value_list = self._iter_metrics.get(key, [])
             value_list.append(value)
@@ -213,32 +214,39 @@ class OptunaMLflow(object):
     #####################################
 
     def report(self, value, step):
+        """Wrapper of the corresponding Optuna function."""
         self._trial.report(value, step)
 
     def should_prune(self):
+        """Wrapper of the corresponding Optuna function."""
         return self._trial.should_prune()
 
     def suggest_categorical(self, name, choices):
+        """Wrapper of the corresponding Optuna function."""
         result = self._trial.suggest_categorical(name, choices)
         self.log_param(name, result, optuna_log=False)
         return result
 
     def suggest_discrete_uniform(self, name, low, high, q):
+        """Wrapper of the corresponding Optuna function."""
         result = self._trial.suggest_discrete_uniform(name, low, high, q)
         self.log_param(name, result, optuna_log=False)
         return result
 
     def suggest_int(self, name, low, high, step=1, log=False):
+        """Wrapper of the corresponding Optuna function."""
         result = self._trial.suggest_int(name, low, high, step, log)
         self.log_param(name, result, optuna_log=False)
         return result
 
     def suggest_loguniform(self, name, low, high):
+        """Wrapper of the corresponding Optuna function."""
         result = self._trial.suggest_loguniform(name, low, high)
         self.log_param(name, result, optuna_log=False)
         return result
 
     def suggest_uniform(self, name, low, high):
+        """Wrapper of the corresponding Optuna function."""
         result = self._trial.suggest_uniform(name, low, high)
         self.log_param(name, result, optuna_log=False)
         return result
