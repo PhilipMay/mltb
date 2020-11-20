@@ -8,7 +8,6 @@ import git
 import os
 
 import mlflow
-from mlflow.tracking.context.default_context import _get_user
 from mlflow.tracking.context.default_context import _get_main_file
 
 
