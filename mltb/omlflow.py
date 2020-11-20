@@ -31,6 +31,10 @@ class OptunaMLflow(object):
     #####################################
 
     def log_metric(self, key, value, step=None):
+        """Wrapper of the corresponding MLflow function.
+
+        The data is also added to Optuna as an user attribute.
+        """
         self._trial.set_user_attr(key, value)
         try:
             mlflow.log_metric(key, value, step=None)
@@ -41,6 +45,10 @@ class OptunaMLflow(object):
             )
 
     def log_metrics(self, metrics, step=None, optuna_log=True):
+        """Wrapper of the corresponding MLflow function.
+
+        The data is also added to Optuna as an user attribute.
+        """
         if optuna_log:
             for key, value in metrics.items():
                 self._trial.set_user_attr(key, value)
@@ -53,6 +61,10 @@ class OptunaMLflow(object):
             )
 
     def log_param(self, key, value, optuna_log=True):
+        """Wrapper of the corresponding MLflow function.
+
+        The data is also added to Optuna as an user attribute.
+        """
         if optuna_log:
             self._trial.set_user_attr(key, value)
         try:
@@ -64,6 +76,10 @@ class OptunaMLflow(object):
             )
 
     def log_params(self, params):
+        """Wrapper of the corresponding MLflow function.
+
+        The data is also added to Optuna as an user attribute.
+        """
         for key, value in params.items():
             self._trial.set_user_attr(key, value)
         try:
@@ -75,6 +91,10 @@ class OptunaMLflow(object):
             )
 
     def set_tag(self, key, value, optuna_log=True):
+        """Wrapper of the corresponding MLflow function.
+
+        The data is also added to Optuna as an user attribute.
+        """
         if optuna_log:
             self._trial.set_user_attr(key, value)
         value = str(value)  # make sure it is a string
@@ -89,6 +109,10 @@ class OptunaMLflow(object):
             )
 
     def set_tags(self, tags, optuna_log=True):
+        """Wrapper of the corresponding MLflow function.
+
+        The data is also added to Optuna as an user attribute.
+        """
         for key, value in tags.items():
             if optuna_log:
                 self._trial.set_user_attr(key, value)
