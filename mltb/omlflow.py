@@ -23,6 +23,7 @@ class OptunaMLflow(object):
         self._enforce_clean_git = enforce_clean_git
         self._max_mlflow_tag_length = 5000
         self._iter_metrics = {}
+        self._next_iter_num = 0
         self._hostname = None
 
     #####################################
@@ -126,7 +127,7 @@ class OptunaMLflow(object):
                 exc_info=True,
             )
 
-    def log_iter(self, metrics, step):  # TODO: add params and tags?
+    def log_iter(self, metrics, step=None):  # TODO: add params and tags?
         """"Log an iteration or fold as a nasted run."""
         for key, value in metrics.items():
             value_list = self._iter_metrics.get(key, [])
@@ -134,6 +135,9 @@ class OptunaMLflow(object):
             self._iter_metrics[key] = value_list
             self._trial.set_user_attr("{}_iter".format(key), value_list)
         digits_format_string = "{{:0{0}d}}-{{:0{0}d}}".format(self._num_name_digits)
+        if step is None:
+            step = self._next_iter_num
+            self._next_iter_num += 1
         try:
             with mlflow.start_run(
                 run_name=digits_format_string.format(self._trial.number, step),
