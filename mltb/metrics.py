@@ -36,8 +36,7 @@ def pos_neg(labels, pos_label):
 
 def best_f1_score(labels, predictions, pos_label):
     """Calculate best f1 score with its threshold."""
-    fpr, tpr, thresholds = sklearn.metrics.roc_curve(labels, predictions,
-                                                     pos_label=pos_label)
+    fpr, tpr, thresholds = sklearn.metrics.roc_curve(labels, predictions, pos_label=pos_label)
     pos, neg = pos_neg(labels, 1)
 
     best_f1 = -1

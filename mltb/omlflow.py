@@ -15,7 +15,6 @@ _logger = logging.getLogger(__name__)
 
 
 class OptunaMLflow(object):
-
     def __init__(self, trial, tracking_uri, num_name_digits=3, enforce_clean_git=False):
         self._trial = trial
         self._tracking_uri = tracking_uri
@@ -139,10 +138,7 @@ class OptunaMLflow(object):
             step = self._next_iter_num
             self._next_iter_num += 1
         try:
-            with mlflow.start_run(
-                run_name=digits_format_string.format(self._trial.number, step),
-                nested=True
-            ):
+            with mlflow.start_run(run_name=digits_format_string.format(self._trial.number, step), nested=True):
                 self.log_metrics(metrics, step=step, optuna_log=False)
         except Exception as e:
             _logger.error(
@@ -169,9 +165,7 @@ class OptunaMLflow(object):
             try:
                 hostname = platform.node()
             except Exception as e:
-                warnings.warn(
-                    "Exception while getting hostname! {}"
-                    .format(e), RuntimeWarning)
+                warnings.warn("Exception while getting hostname! {}".format(e), RuntimeWarning)
             self._hostname = hostname
         return self._hostname
 
@@ -222,9 +216,7 @@ class OptunaMLflow(object):
             if isinstance(study_direction, optuna._study_direction.StudyDirection):
                 tags["direction"] = str(study_direction).split(".")[-1]
 
-            distributions = {
-                (k + "_distribution"): str(v) for (k, v) in self._trial.distributions.items()
-            }
+            distributions = {(k + "_distribution"): str(v) for (k, v) in self._trial.distributions.items()}
             tags.update(distributions)
             self.set_tags(tags, optuna_log=False)
 

@@ -32,10 +32,10 @@ for lab in test_labels:
 test_5_labels = np.asarray(test_5_labels)
 
 train_images = train_images.reshape((60000, 28 * 28))
-train_images = train_images.astype('float32') / 255
+train_images = train_images.astype("float32") / 255
 
 test_images = test_images.reshape((10000, 28 * 28))
-test_images = test_images.astype('float32') / 255
+test_images = test_images.astype("float32") / 255
 
 train_images = train_images[:1000]
 test_images = test_images[:1000]
@@ -43,32 +43,42 @@ train_5_labels = train_5_labels[:1000]
 test_5_labels = test_5_labels[:1000]
 
 network = models.Sequential()
-network.add(layers.Dense(100, activation='relu', input_shape=(28 * 28,)))
-network.add(layers.Dense(100, activation='relu'))
-network.add(layers.Dense(1, activation='sigmoid'))
+network.add(layers.Dense(100, activation="relu", input_shape=(28 * 28,)))
+network.add(layers.Dense(100, activation="relu"))
+network.add(layers.Dense(1, activation="sigmoid"))
 
-network.compile(optimizer='adam', loss='binary_crossentropy', metrics=['acc'])
+network.compile(optimizer="adam", loss="binary_crossentropy", metrics=["acc"])
 
 mltb_callback = mltb.keras.BinaryClassifierMetricsCallback(test_images, test_5_labels, 1)
-es = callbacks.EarlyStopping(monitor='val_roc_auc', patience=5, mode='max')
+es = callbacks.EarlyStopping(monitor="val_roc_auc", patience=5, mode="max")
 
-history = network.fit(train_images, train_5_labels, verbose=1, epochs=400,
-                      batch_size=128,
-                      # validation_data=(test_images, test_5_labels),
-                      callbacks=[mltb_callback, es],
-                      class_weight={0: 1.0, 1: 9.0},
-                      )
+history = network.fit(
+    train_images,
+    train_5_labels,
+    verbose=1,
+    epochs=400,
+    batch_size=128,
+    # validation_data=(test_images, test_5_labels),
+    callbacks=[mltb_callback, es],
+    class_weight={0: 1.0, 1: 9.0},
+)
 
 print(history.history)
 
 # Example with specific metrics
-mltb_callback = mltb.keras.BinaryClassifierMetricsCallback(test_images, test_5_labels, 1, metrics=['val_roc_auc','val_mcc'])
-history = network.fit(train_images, train_5_labels, verbose=1, epochs=400,
-                      batch_size=128,
-                      # validation_data=(test_images, test_5_labels),
-                      callbacks=[mltb_callback, es],
-                      class_weight={0: 1.0, 1: 9.0},
-                      )
+mltb_callback = mltb.keras.BinaryClassifierMetricsCallback(
+    test_images, test_5_labels, 1, metrics=["val_roc_auc", "val_mcc"]
+)
+history = network.fit(
+    train_images,
+    train_5_labels,
+    verbose=1,
+    epochs=400,
+    batch_size=128,
+    # validation_data=(test_images, test_5_labels),
+    callbacks=[mltb_callback, es],
+    class_weight={0: 1.0, 1: 9.0},
+)
 
 print(history.history)
 
@@ -79,13 +89,18 @@ def custom_average_recall_score(y_true, y_pred, pos_label):
     return sklearn.metrics.recall_score(y_true, rounded_pred, pos_label)
 
 
-mltb_callback = mltb.keras.BinaryClassifierMetricsCallback(test_images, test_5_labels, 1,
-                                                           metrics=['val_roc_auc', custom_average_recall_score])
-history = network.fit(train_images, train_5_labels, verbose=1, epochs=400,
-                      batch_size=128,
-                      # validation_data=(test_images, test_5_labels),
-                      callbacks=[mltb_callback, es],
-                      class_weight={0: 1.0, 1: 9.0},
-                      )
+mltb_callback = mltb.keras.BinaryClassifierMetricsCallback(
+    test_images, test_5_labels, 1, metrics=["val_roc_auc", custom_average_recall_score]
+)
+history = network.fit(
+    train_images,
+    train_5_labels,
+    verbose=1,
+    epochs=400,
+    batch_size=128,
+    # validation_data=(test_images, test_5_labels),
+    callbacks=[mltb_callback, es],
+    class_weight={0: 1.0, 1: 9.0},
+)
 
 print(history.history)

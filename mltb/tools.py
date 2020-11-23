@@ -9,7 +9,7 @@ import joblib
 def multi_param_call(function, param_dict, iterations, verbose=1):
     """Call function multiple times and return dict with results.
 
-    Calls the given `function` `iterations` times for each entry (value) 
+    Calls the given `function` `iterations` times for each entry (value)
     in the `param_dict`.
 
     Parameters
@@ -27,13 +27,13 @@ def multi_param_call(function, param_dict, iterations, verbose=1):
     Returns
     -------
     dict
-        Dict with result values of the `function` calls. If `function` returned just 
+        Dict with result values of the `function` calls. If `function` returned just
         one value the returned dict contains the same keys as `param_dict`. The value is
-        an array with one result for each `function` call. The called `function` can also 
-        return a dict with results as an alternative. This is if you want to return more 
+        an array with one result for each `function` call. The called `function` can also
+        return a dict with results as an alternative. This is if you want to return more
         then just one result. In this case this result dict contains the same keys
         as the `function` returned on first level. As value it contains a second dict
-        as the second level. This second level dict contains the same keys as 
+        as the second level. This second level dict contains the same keys as
         `param_dict`. The value is an array with one result for each call.
     """
     result = {}
@@ -49,14 +49,14 @@ def multi_param_call(function, param_dict, iterations, verbose=1):
                     sub_dict = result.setdefault(f_result_key, {})
                     sub_dict.setdefault(key, []).append(f_result_value)
 
-            else: 
+            else:
                 result.setdefault(key, []).append(f_result)
             if verbose == 1:
-                pbar.update(1)    
+                pbar.update(1)
             elif verbose == 2:
-                print("Done with iteration {} of {} for {}. Result: {}".format(i+1, iterations, key, f_result))
+                print("Done with iteration {} of {} for {}. Result: {}".format(i + 1, iterations, key, f_result))
         if verbose == 1:
-            pbar.write('Done with {}'.format(key))
+            pbar.write("Done with {}".format(key))
     if verbose == 1:
         pbar.close()
     return result
@@ -101,8 +101,8 @@ def save_data_list(data, filename):
         pass
 
     data_list.append(data)
-    print('Saving data list of lenth {}.'.format(len(data_list)))
-    joblib.dump(data_list, filename, compress=('gzip', 3))
+    print("Saving data list of lenth {}.".format(len(data_list)))
+    joblib.dump(data_list, filename, compress=("gzip", 3))
 
 
 def load_data_list(filename):

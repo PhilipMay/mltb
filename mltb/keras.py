@@ -9,7 +9,6 @@ from . import metrics as metrics_utils
 
 
 class DefaultMetrics:
-
     @staticmethod
     def val_roc_auc(y_true, y_pred, pos_label):
         return sklearn.metrics.roc_auc_score(y_true, y_pred)
@@ -34,13 +33,16 @@ class DefaultMetrics:
         return sklearn.metrics.matthews_corrcoef(y_true, round_y_pred)
 
 
-DEFAULT_METRICS_BY_NAME = {function_name: getattr(DefaultMetrics, function_name) for function_name in
-                           dir(DefaultMetrics) if not function_name.startswith('__')}
+DEFAULT_METRICS_BY_NAME = {
+    function_name: getattr(DefaultMetrics, function_name)
+    for function_name in dir(DefaultMetrics)
+    if not function_name.startswith("__")
+}
 
 
 class UnsupportedMetrics(ValueError):
     def __init__(self, metric_names):
-        super().__init__('Unsupported metrics: {}'.format(','.join(metric_names)))
+        super().__init__("Unsupported metrics: {}".format(",".join(metric_names)))
 
 
 class BinaryClassifierMetricsCallback(keras.callbacks.Callback):
@@ -70,7 +72,7 @@ class BinaryClassifierMetricsCallback(keras.callbacks.Callback):
         self.val_labels = val_labels
         self.pos_label = pos_label
 
-        self.metrics = metrics or ['val_roc_auc', 'val_average_precision', 'val_f1', 'val_acc']
+        self.metrics = metrics or ["val_roc_auc", "val_average_precision", "val_f1", "val_acc"]
         self.__validate_metrics(self.metrics)
         self.metric_functions = self.__convert_metrics_to_functions(self.metrics)
 
@@ -84,7 +86,7 @@ class BinaryClassifierMetricsCallback(keras.callbacks.Callback):
 
     def __validate_metrics(self, metrics):
         if not metrics or not isinstance(metrics, list):
-            raise ValueError('Invalid metric list. It must be a list of custom metrics or str.')
+            raise ValueError("Invalid metric list. It must be a list of custom metrics or str.")
 
         invalid_metrics = list(filter(lambda x: not self.__is_valid_metric(x), metrics))
 
@@ -104,7 +106,6 @@ class BinaryClassifierMetricsCallback(keras.callbacks.Callback):
             logs[metric_name] = metric_function(y_true, y_pred, pos_label)
 
         # DEPRECATED: Those metrics should be replaced by custom metrics
-        val_best_f1, val_best_f1_threshold = metrics_utils.best_f1_score(
-            y_true, y_pred, pos_label)
+        val_best_f1, val_best_f1_threshold = metrics_utils.best_f1_score(y_true, y_pred, pos_label)
         logs["val_best_f1"] = val_best_f1
         logs["val_best_f1_threshold"] = val_best_f1_threshold
