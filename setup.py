@@ -26,6 +26,9 @@ setuptools.setup(
         "scipy",
         "joblib",
     ],
+    extras_require={
+        "checking": ["black"],
+    },
     keywords="keras metric hyperopt lightgbm plot visualisation",
     classifiers=[
         "Development Status :: 3 - Alpha",
