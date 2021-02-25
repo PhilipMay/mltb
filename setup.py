@@ -5,7 +5,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="mltb",
-    version="0.5.dev1",
+    #version="0.5.dev1",
+    version="0.6",
     maintainer="Philip May",
     author="Philip May",
     author_email="pm@eniak.de",
