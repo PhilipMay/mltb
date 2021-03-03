@@ -228,7 +228,7 @@ class OptunaMLflow(object):
                 self._end_run("KILLED")
             else:
                 self._end_run("FAILED")
-            return False
+            return False  # raise exception again
 
     #####################################
     # Optuna wrapper functions
