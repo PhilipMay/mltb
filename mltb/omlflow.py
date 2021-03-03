@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 
 
 class OptunaMLflow(object):
-    def __init__(self, trial, tracking_uri, num_name_digits=3, enforce_clean_git=False):
+    def __init__(self, trial, tracking_uri=None, num_name_digits=3, enforce_clean_git=False):
         self._trial = trial
         self._tracking_uri = tracking_uri
         self._num_name_digits = num_name_digits
