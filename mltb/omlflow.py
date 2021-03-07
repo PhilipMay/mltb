@@ -23,8 +23,8 @@ class OptunaMLflow(object):
 
         Args:
             trial ([type]): [description]
-            tracking_uri ([type], optional): See 
-                `MLflow documentation<https://www.mlflow.org/docs/latest/python_api/mlflow.html#mlflow.set_tracking_uri>`_. 
+            tracking_uri ([type], optional): See `MLflow documentation
+                <https://www.mlflow.org/docs/latest/python_api/mlflow.html#mlflow.set_tracking_uri>`_.
                 Defaults to None which uses the ``MLFLOW_TRACKING_URI`` environment variable if it is available.
             num_name_digits (int, optional): [description]. Defaults to 3.
             enforce_clean_git (bool, optional): [description]. Defaults to False.
