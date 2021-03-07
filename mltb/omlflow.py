@@ -15,7 +15,20 @@ _logger = logging.getLogger(__name__)
 
 
 class OptunaMLflow(object):
+    """Wrapper to log to Optuna and MLflow at the same time.
+    """
+
     def __init__(self, trial, tracking_uri=None, num_name_digits=3, enforce_clean_git=False):
+        """Init class.
+
+        Args:
+            trial ([type]): [description]
+            tracking_uri ([type], optional): See 
+                `MLflow documentation<https://www.mlflow.org/docs/latest/python_api/mlflow.html#mlflow.set_tracking_uri>`_. 
+                Defaults to None which uses the ``MLFLOW_TRACKING_URI`` environment variable if it is available.
+            num_name_digits (int, optional): [description]. Defaults to 3.
+            enforce_clean_git (bool, optional): [description]. Defaults to False.
+        """
         self._trial = trial
         self._tracking_uri = tracking_uri
         self._num_name_digits = num_name_digits
