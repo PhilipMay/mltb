@@ -15,8 +15,7 @@ _logger = logging.getLogger(__name__)
 
 
 class OptunaMLflow(object):
-    """Wrapper to log to Optuna and MLflow at the same time.
-    """
+    """Wrapper to log to Optuna and MLflow at the same time."""
 
     def __init__(self, trial, tracking_uri=None, num_name_digits=3, enforce_clean_git=False):
         """Init class.
