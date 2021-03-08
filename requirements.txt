@@ -8,3 +8,4 @@ hyperopt
 scipy
 joblib
 tensorflow
+optuna
