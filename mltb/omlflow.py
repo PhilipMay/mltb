@@ -63,6 +63,11 @@ class OptunaMLflow(object):
         """Wrapper of the corresponding MLflow function.
 
         The data is also added to Optuna as an user attribute.
+
+        Args:
+            metrics ([Dict]): Dict of metrics.
+            optuna_log (bool, optional): Internal parameter that should be ignored by the API user.
+                Defaults to True.
         """
         for key, value in metrics.items():
             if optuna_log:
@@ -80,6 +85,10 @@ class OptunaMLflow(object):
         """Wrapper of the corresponding MLflow function.
 
         The data is also added to Optuna as an user attribute.
+
+        Args:
+            optuna_log (bool, optional): Internal parameter that should be ignored by the API user.
+                Defaults to True.
         """
         if optuna_log:
             self._trial.set_user_attr(key, value)
@@ -96,6 +105,9 @@ class OptunaMLflow(object):
         """Wrapper of the corresponding MLflow function.
 
         The data is also added to Optuna as an user attribute.
+
+        Args:
+            params ([Dict]): Dict of params.
         """
         for key, value in params.items():
             self._trial.set_user_attr(key, value)
@@ -112,6 +124,10 @@ class OptunaMLflow(object):
         """Wrapper of the corresponding MLflow function.
 
         The data is also added to Optuna as an user attribute.
+
+        Args:
+            optuna_log (bool, optional): Internal parameter that should be ignored by the API user.
+                Defaults to True.
         """
         if optuna_log:
             self._trial.set_user_attr(key, value)
@@ -131,6 +147,11 @@ class OptunaMLflow(object):
         """Wrapper of the corresponding MLflow function.
 
         The data is also added to Optuna as an user attribute.
+
+        Args:
+            tags ([Dict]): Dict of tags.
+            optuna_log (bool, optional): Internal parameter that should be ignored by the API user.
+                Defaults to True.
         """
         for key, value in tags.items():
             if optuna_log:
