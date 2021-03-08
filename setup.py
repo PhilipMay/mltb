@@ -1,12 +1,23 @@
+import os
 import setuptools
+
+
+def get_version():
+
+    version_filepath = os.path.join(os.path.dirname(__file__), "mltb", "version.py")
+    with open(version_filepath) as f:
+        for line in f:
+            if line.startswith("__version__"):
+                return line.strip().split()[-1][1:-1]
+    assert False
+
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="mltb",
-    # version="0.5.dev1",
-    version="0.6",
+    version=get_version(),
     maintainer="Philip May",
     author="Philip May",
     author_email="pm@eniak.de",
