@@ -44,3 +44,12 @@ def test_study_name(tmpdir):
 
     run_infos = mlfl_client.list_run_infos(experiment_id)
     assert len(run_infos) == n_trials + n_trials * num_folds
+
+    first_run_id = run_infos[0].run_id
+    first_run = mlfl_client.get_run(first_run_id)
+    first_run_dict = first_run.to_dictionary()
+    assert "x" in first_run_dict["data"]["params"]
+    assert "y" in first_run_dict["data"]["params"]
+    assert "z" in first_run_dict["data"]["params"]
+    assert first_run_dict["data"]["tags"]["direction"] == "MINIMIZE"
+    assert first_run_dict["data"]["tags"]["state"] == "COMPLETE"
