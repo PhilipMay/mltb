@@ -21,13 +21,15 @@ class OptunaMLflow(object):
         """Init class.
 
         Args:
-            trial ([type]): [description]
+            trial ([``optuna.trial.Trial``]): The optuna trial to use.
             tracking_uri ([str], optional): See `MLflow documentation
                 <https://www.mlflow.org/docs/latest/python_api/mlflow.html#mlflow.set_tracking_uri>`_.
-                Defaults to ``None`` which logs to the default locale folder ``./mlruns``or
+                Defaults to ``None`` which logs to the default locale folder ``./mlruns`` or
                 uses the ``MLFLOW_TRACKING_URI`` environment variable if it is available.
             num_name_digits (int, optional): [description]. Defaults to 3.
-            enforce_clean_git (bool, optional): [description]. Defaults to False.
+            enforce_clean_git (bool, optional): Check and enforce that the GIT repository has no
+                uncommited changes. Defaults to False. Also see `git.repo.base.Repo.is_dirty
+                <https://gitpython.readthedocs.io/en/stable/reference.html#git.repo.base.Repo.is_dirty>`_
         """
         self._trial = trial
         self._tracking_uri = tracking_uri
