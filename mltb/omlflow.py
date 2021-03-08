@@ -22,9 +22,10 @@ class OptunaMLflow(object):
 
         Args:
             trial ([type]): [description]
-            tracking_uri ([type], optional): See `MLflow documentation
+            tracking_uri ([str], optional): See `MLflow documentation
                 <https://www.mlflow.org/docs/latest/python_api/mlflow.html#mlflow.set_tracking_uri>`_.
-                Defaults to None which uses the ``MLFLOW_TRACKING_URI`` environment variable if it is available.
+                Defaults to ``None`` which logs to the default locale folder ``./mlruns``or
+                uses the ``MLFLOW_TRACKING_URI`` environment variable if it is available.
             num_name_digits (int, optional): [description]. Defaults to 3.
             enforce_clean_git (bool, optional): [description]. Defaults to False.
         """
@@ -47,6 +48,7 @@ class OptunaMLflow(object):
         The data is also added to Optuna as an user attribute.
         """
         self._trial.set_user_attr(key, value)
+        _logger.info(f"Metric: {key}: {value} at step: {step}")
         try:
             mlflow.log_metric(key, value, step=None)
         except Exception as e:
@@ -60,9 +62,10 @@ class OptunaMLflow(object):
 
         The data is also added to Optuna as an user attribute.
         """
-        if optuna_log:
-            for key, value in metrics.items():
+        for key, value in metrics.items():
+            if optuna_log:
                 self._trial.set_user_attr(key, value)
+            _logger.info(f"Metric: {key}: {value} at step: {step}")
         try:
             mlflow.log_metrics(metrics, step=None)
         except Exception as e:
@@ -78,6 +81,7 @@ class OptunaMLflow(object):
         """
         if optuna_log:
             self._trial.set_user_attr(key, value)
+        _logger.info(f"Param: {key}: {value}")
         try:
             mlflow.log_param(key, value)
         except Exception as e:
@@ -93,6 +97,7 @@ class OptunaMLflow(object):
         """
         for key, value in params.items():
             self._trial.set_user_attr(key, value)
+            _logger.info(f"Param: {key}: {value}")
         try:
             mlflow.log_params(params)
         except Exception as e:
@@ -108,6 +113,7 @@ class OptunaMLflow(object):
         """
         if optuna_log:
             self._trial.set_user_attr(key, value)
+        _logger.info(f"Tag: {key}: {value}")
         value = str(value)  # make sure it is a string
         if len(value) > self._max_mlflow_tag_length:
             value = textwrap.shorten(value, self._max_mlflow_tag_length)
@@ -127,6 +133,7 @@ class OptunaMLflow(object):
         for key, value in tags.items():
             if optuna_log:
                 self._trial.set_user_attr(key, value)
+            _logger.info(f"Tag: {key}: {value}")
             value = str(value)  # make sure it is a string
             if len(value) > self._max_mlflow_tag_length:
                 tags[key] = textwrap.shorten(value, self._max_mlflow_tag_length)
@@ -145,6 +152,7 @@ class OptunaMLflow(object):
             value_list.append(value)
             self._iter_metrics[key] = value_list
             self._trial.set_user_attr("{}_iter".format(key), value_list)
+            _logger.info(f"Iteration metric: {key}: {value} at step: {step}")
         digits_format_string = "{{:0{0}d}}-{{:0{0}d}}".format(self._num_name_digits)
         if step is None:
             step = self._next_iter_num
@@ -158,9 +166,13 @@ class OptunaMLflow(object):
                 exc_info=True,
             )
 
-    def _end_run(self, status):
+    def _end_run(self, status, exc_text=None):
         try:
             mlflow.end_run(status)
+            if exc_text is None:
+                _logger.info("Run finished with status: {}".format(status))
+            else:
+                _logger.error("Run finished with status: {}, exc_text:{}".format(status, exc_text))
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
@@ -187,7 +199,9 @@ class OptunaMLflow(object):
             path = os.path.dirname(path)
         repo = git.Repo(path, search_parent_directories=True)
         if repo.is_dirty():
-            raise RuntimeError("Git repository '{}' is dirty!".format(path))
+            error_message = "Git repository '{}' is dirty!".format(path)
+            _logger.error(error_message)
+            raise RuntimeError(error_message)
 
     #####################################
     # context manager functions
@@ -207,6 +221,7 @@ class OptunaMLflow(object):
 
             digits_format_string = "{{:0{}d}}".format(self._num_name_digits)
             mlflow.start_run(run_name=digits_format_string.format(self._trial.number))
+            _logger.info("Run {} started.".format(self._trial.number))
 
             # TODO: use set_tags with dict
             self.set_tag("hostname", self._get_hostname())
@@ -231,7 +246,6 @@ class OptunaMLflow(object):
             distributions = {(k + "_distribution"): str(v) for (k, v) in self._trial.distributions.items()}
             tags.update(distributions)
             self.set_tags(tags, optuna_log=False)
-
             self._end_run("FINISHED")
         else:  # exception
             exc_text = "".join(traceback.format_exception(exc_type, exc_value, tb))
