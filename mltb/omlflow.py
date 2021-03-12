@@ -212,7 +212,9 @@ class OptunaMLflow(object):
             try:
                 hostname = platform.node()
             except Exception as e:
-                warnings.warn("Exception while getting hostname! {}".format(e), RuntimeWarning)
+                warn_msg = "Exception while getting hostname! {}".format(e)
+                _logger.warn(warn_msg)
+                warnings.warn(warn_msg, RuntimeWarning)
             self._hostname = hostname
         return self._hostname
 
