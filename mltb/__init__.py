@@ -1,1 +1,1 @@
-from mltb.version import __version__   # noqa: F401
+from mltb.version import __version__  # noqa: F401
