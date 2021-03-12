@@ -8,6 +8,7 @@ import git
 import os
 
 import mlflow
+from mlflow.entities import RunStatus
 from mlflow.tracking.context.default_context import _get_main_file
 
 
@@ -276,9 +277,9 @@ class OptunaMLflow(object):
             exc_text = "".join(traceback.format_exception(exc_type, exc_value, tb))
             self.set_tag("exception", exc_text)
             if exc_type is KeyboardInterrupt:
-                self._end_run("KILLED")
+                self._end_run(RunStatus.to_string(RunStatus.KILLED))
             else:
-                self._end_run("FAILED")
+                self._end_run(RunStatus.to_string(RunStatus.FAILED))
             return False  # raise exception again
 
     #####################################
