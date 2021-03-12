@@ -1,6 +1,7 @@
 """A collection of plot tools."""
 import matplotlib.pyplot as plt
 
+
 # see https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.twinx.html
 def twin_axes_timeseries_plot(
     values_1,
@@ -49,7 +50,7 @@ def twin_axes_timeseries_plot(
     """
     fig, ax1 = plt.subplots()
 
-    if title != None:
+    if title is not None:
         plt.title(title)
 
     ax1.set_xlabel(label_x)

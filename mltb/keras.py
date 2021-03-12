@@ -1,6 +1,4 @@
 """Keras tools."""
-from enum import Enum
-
 import sklearn.metrics
 import numpy as np
 import tensorflow.keras as keras

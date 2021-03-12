@@ -79,7 +79,7 @@ def multi_class_accuracy_score_factory(num_classes):
 
     See Also
     --------
-    * `sklearn.metrics.accuracy_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html>`
+    * `sklearn.metrics.accuracy_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html>`  # noqa: E501
     * `LightGBM Training API: <https://lightgbm.readthedocs.io/en/latest/Python-API.html#training-api>`
     """
 
@@ -115,7 +115,7 @@ def binary_class_accuracy_score(y_pred, data):
 
     See Also
     --------
-    * `sklearn.metrics.accuracy_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html>`
+    * `sklearn.metrics.accuracy_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html>`  # noqa: E501
     * `LightGBM Training API: <https://lightgbm.readthedocs.io/en/latest/Python-API.html#training-api>`
     """
     y_true = data.get_label()
@@ -145,7 +145,7 @@ def binary_class_average_precision_score(y_pred, data):
 
     See Also
     --------
-    * `sklearn.average_precision_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html>`
+    * `sklearn.average_precision_score: <https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html>`  # noqa: E501
     * `LightGBM Training API: <https://lightgbm.readthedocs.io/en/latest/Python-API.html#training-api>`
     """
     y_true = data.get_label()
