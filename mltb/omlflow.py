@@ -45,7 +45,6 @@ class OptunaMLflow(object):
         self._optuna_result_name = optuna_result_name
 
     def __call__(self, func):
-
         @wraps(func)
         def objective_decorator(trial):
             """Decorator for optuna objective function.
