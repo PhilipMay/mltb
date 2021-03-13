@@ -21,11 +21,7 @@ class OptunaMLflow(object):
     """Wrapper to log to Optuna and MLflow at the same time."""
 
     def __init__(
-        self,
-        tracking_uri=None,
-        num_name_digits=3,
-        enforce_clean_git=False,
-        optuna_result_name="optuna_result"
+        self, tracking_uri=None, num_name_digits=3, enforce_clean_git=False, optuna_result_name="optuna_result"
     ):
         """Init class.
 

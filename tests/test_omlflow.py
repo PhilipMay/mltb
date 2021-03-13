@@ -6,7 +6,6 @@ from mltb.omlflow import OptunaMLflow
 
 
 def _objective_func_factory(tracking_uri, num_folds):
-
     @OptunaMLflow(tracking_uri=tracking_uri)
     def _objective_func(omlflow):
         x = omlflow.suggest_uniform("x", -10, 10)
