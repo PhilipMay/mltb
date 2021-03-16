@@ -6,21 +6,19 @@ from mltb.omlflow import OptunaMLflow
 
 
 def _objective_func_factory(tracking_uri, num_folds):
-    def _objective_func(trial):
-        with OptunaMLflow(trial, tracking_uri) as om:
-            x = trial.suggest_uniform("x", -10, 10)
-            om.log_param("x", x)
-            results = []
+    @OptunaMLflow(tracking_uri=tracking_uri)
+    def _objective_func(omlflow):
+        x = omlflow.suggest_uniform("x", -10, 10)
+        results = []
 
-            # do folds
-            for i in range(num_folds):
-                result = (x - 2) ** 2
-                om.log_iter({"result": result}, i)
-                results.append(result)
+        # do folds
+        for i in range(num_folds):
+            result = (x - 2) ** 2
+            omlflow.log_iter({"result": result}, i)
+            results.append(result)
 
-            result = np.mean(results)
-            om.log_metric("result", result)
-            return result
+        result = np.mean(results)
+        return result
 
     return _objective_func
 
