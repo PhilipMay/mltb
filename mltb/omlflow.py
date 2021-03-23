@@ -116,7 +116,7 @@ class OptunaMLflow(object):
                 distributions = {(k + "_distribution"): str(v) for (k, v) in self._trial.distributions.items()}
                 tags.update(distributions)
                 self.set_tags(tags, optuna_log=False)
-                self._end_run("FINISHED")
+                self._end_run(RunStatus.to_string(RunStatus.FINISHED))
 
                 return result
             except:  # noqa: E722
