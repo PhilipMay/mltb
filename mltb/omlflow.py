@@ -120,6 +120,13 @@ class OptunaMLflow(object):
 
                 return result
             except:  # noqa: E722
+
+                # TODO: this is just temp. code - remove later
+                _logger.error(
+                    "### exception raised ###",
+                    exc_info=True,
+                )
+
                 exc_type, exc_value, exc_traceback = sys.exc_info()
                 exc_text = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
                 self.set_tag("exception", exc_text)
