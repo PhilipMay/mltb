@@ -323,6 +323,8 @@ class OptunaMLflow(object):
             error_message = "Git repository '{}' is dirty!".format(path)
             _logger.error(error_message)
             raise RuntimeError(error_message)
+        else:
+            _logger.info("Git repository '{}' is clean.".format(path))
 
     #####################################
     # Optuna wrapper functions
