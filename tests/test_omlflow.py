@@ -2,6 +2,7 @@ import optuna
 import numpy as np
 from mlflow.tracking import MlflowClient
 
+from mltb import omlflow
 from mltb.omlflow import OptunaMLflow
 
 
@@ -48,3 +49,23 @@ def test_study_name(tmpdir):
     first_run_dict = first_run.to_dictionary()
     assert "x" in first_run_dict["data"]["params"]
     assert first_run_dict["data"]["tags"]["direction"] == "MINIMIZE"
+
+
+def test_normalize_mlflow_entry_name():
+    entry_name = "AaZz10_-. /ÄäÖöÜüß#(!)}=%§"
+    result = omlflow.normalize_mlflow_entry_name(entry_name)
+    assert result == "AaZz10_-. /AeaeOeoeUeuess________"
+
+
+def test_normalize_mlflow_entry_names_in_dict():
+    dct = {
+        "AaZz10_-. /ÄäÖöÜüß#(!)}=%§": 6,
+        "somethingÄ": 8,
+        "ok key": 9,
+    }
+    result = omlflow.normalize_mlflow_entry_names_in_dict(dct)
+
+    assert "AaZz10_-. /AeaeOeoeUeuess________" in result
+    assert "somethingAe" in result
+    assert "ok key" in result
+    assert len(result) == 3

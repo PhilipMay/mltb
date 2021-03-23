@@ -8,6 +8,7 @@ import git
 import os
 from functools import wraps
 import sys
+import re
 
 import mlflow
 from mlflow.entities import RunStatus
@@ -15,6 +16,26 @@ from mlflow.tracking.context.default_context import _get_main_file
 
 
 _logger = logging.getLogger(__name__)
+_normalize_mlflow_entry_name_re = re.compile(r"[^a-zA-Z0-9-._ /]")
+
+
+def normalize_mlflow_entry_name(name):
+    name = name.replace("Ä", "Ae")
+    name = name.replace("Ö", "Oe")
+    name = name.replace("Ü", "Ue")
+    name = name.replace("ä", "ae")
+    name = name.replace("ö", "oe")
+    name = name.replace("ü", "ue")
+    name = name.replace("ß", "ss")
+    name = re.sub(_normalize_mlflow_entry_name_re, "_", name)
+    return name
+
+
+def normalize_mlflow_entry_names_in_dict(dct):
+    keys = dct.keys()
+    for key in keys:
+        dct[normalize_mlflow_entry_name(key)] = dct.pop(key)
+    return dct
 
 
 class OptunaMLflow(object):
@@ -127,7 +148,7 @@ class OptunaMLflow(object):
             self._trial.set_user_attr(key, value)
         _logger.info(f"Metric: {key}: {value} at step: {step}")
         try:
-            mlflow.log_metric(key, value, step=None)
+            mlflow.log_metric(normalize_mlflow_entry_name(key), value, step=None)
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
@@ -149,7 +170,7 @@ class OptunaMLflow(object):
                 self._trial.set_user_attr(key, value)
             _logger.info(f"Metric: {key}: {value} at step: {step}")
         try:
-            mlflow.log_metrics(metrics, step=None)
+            mlflow.log_metrics(normalize_mlflow_entry_names_in_dict(metrics), step=None)
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
@@ -169,7 +190,7 @@ class OptunaMLflow(object):
             self._trial.set_user_attr(key, value)
         _logger.info(f"Param: {key}: {value}")
         try:
-            mlflow.log_param(key, value)
+            mlflow.log_param(normalize_mlflow_entry_name(key), value)
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
@@ -188,7 +209,7 @@ class OptunaMLflow(object):
             self._trial.set_user_attr(key, value)
             _logger.info(f"Param: {key}: {value}")
         try:
-            mlflow.log_params(params)
+            mlflow.log_params(normalize_mlflow_entry_names_in_dict(params))
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
@@ -211,7 +232,7 @@ class OptunaMLflow(object):
         if len(value) > self._max_mlflow_tag_length:
             value = textwrap.shorten(value, self._max_mlflow_tag_length)
         try:
-            mlflow.set_tag(key, value)
+            mlflow.set_tag(normalize_mlflow_entry_name(key), value)
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
@@ -236,7 +257,7 @@ class OptunaMLflow(object):
             if len(value) > self._max_mlflow_tag_length:
                 tags[key] = textwrap.shorten(value, self._max_mlflow_tag_length)
         try:
-            mlflow.set_tags(tags)
+            mlflow.set_tags(normalize_mlflow_entry_names_in_dict(tags))
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
@@ -257,7 +278,7 @@ class OptunaMLflow(object):
             self._next_iter_num += 1
         try:
             with mlflow.start_run(run_name=digits_format_string.format(self._trial.number, step), nested=True):
-                self.log_metrics(metrics, step=step, optuna_log=False)
+                self.log_metrics(normalize_mlflow_entry_names_in_dict(metrics), step=step, optuna_log=False)
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
