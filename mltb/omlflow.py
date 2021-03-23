@@ -32,7 +32,7 @@ def normalize_mlflow_entry_name(name):
 
 
 def normalize_mlflow_entry_names_in_dict(dct):
-    keys = dct.keys()
+    keys = list(dct.keys())  # must create a copy do keys do not change while iteration
     for key in keys:
         dct[normalize_mlflow_entry_name(key)] = dct.pop(key)
     return dct
