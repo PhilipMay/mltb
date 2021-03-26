@@ -120,23 +120,25 @@ class OptunaMLflow(object):
                 tags.update(distributions)
                 self.set_tags(tags, optuna_log=False)
                 self._end_run(RunStatus.to_string(RunStatus.FINISHED))
+                _logger.info("Run finished.")
 
                 return result
-            except:  # noqa: E722
-
-                # TODO: this is just temp. code - remove later
+            except Exception as e:
                 _logger.error(
-                    "### exception raised ###",
+                    "Exception raised while executing Optuna trial! Exception: {}".format(e),
                     exc_info=True,
                 )
 
+                # log exception info to Optuna and MLflow as a tag
                 exc_type, exc_value, exc_traceback = sys.exc_info()
                 exc_text = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
                 self.set_tag("exception", exc_text)
                 if exc_type is KeyboardInterrupt:
                     self._end_run(RunStatus.to_string(RunStatus.KILLED))
+                    _logger.info("Run killed.")
                 else:
                     self._end_run(RunStatus.to_string(RunStatus.FAILED))
+                    _logger.info("Run failed.")
                 raise  # raise exception again
 
         return objective_decorator
