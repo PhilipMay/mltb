@@ -59,11 +59,11 @@ class SignificanceRepeatedTrainingPruner(BasePruner):
                     trial_mean > best_trial_mean and study.direction == StudyDirection.MINIMIZE
                 ):
                     if study.direction == StudyDirection.MAXIMIZE:
-                        alternative = 'less'
+                        alternative = "less"
                     elif study.direction == StudyDirection.MINIMIZE:
-                        alternative = 'greater'
+                        alternative = "greater"
                     else:
-                        raise RuntimeError('Can not find valid StudyDirection!')
+                        raise RuntimeError("Can not find valid StudyDirection!")
 
                     pvalue = stats.ttest_ind(
                         trial_intermediate_values,
