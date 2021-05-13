@@ -182,7 +182,7 @@ class OptunaMLflow(object):
                 self._trial.set_user_attr(key, value)
             _logger.info(f"Metric: {key}: {value} at step: {step}")
         try:
-            mlflow.log_metrics(normalize_mlflow_entry_names_in_dict(metrics), step=None)
+            mlflow.log_metrics(normalize_mlflow_entry_names_in_dict(metrics), step=step)
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
