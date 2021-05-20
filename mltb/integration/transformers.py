@@ -32,12 +32,7 @@ class OMLflowCallback(transformers.TrainerCallback):
             trial: OptunaMLflow object
             log_training_args: Whether to log all Transformers TrainingArguments as MLflow params
             log_model_config: Whether to log the Transformers model config as MLflow params
-
-        Raises:
-            ImportError: If the Transformers package is not installed correctly
         """
-        _imports.check()
-
         self._MAX_PARAM_VAL_LENGTH = mlflow.utils.validation.MAX_PARAM_VAL_LENGTH
         self._MAX_PARAMS_TAGS_PER_BATCH = mlflow.utils.validation.MAX_PARAMS_TAGS_PER_BATCH
 
