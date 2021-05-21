@@ -1,19 +1,18 @@
 import logging
-import optuna
+import os
 import platform
+import re
+import sys
 import textwrap
 import traceback
 import warnings
-import git
-import os
 from functools import wraps
-import sys
-import re
 
+import git
 import mlflow
+import optuna
 from mlflow.entities import RunStatus
 from mlflow.tracking.context.default_context import _get_main_file
-
 
 _logger = logging.getLogger(__name__)
 _normalize_mlflow_entry_name_re = re.compile(r"[^a-zA-Z0-9-._ /]")
@@ -182,7 +181,7 @@ class OptunaMLflow(object):
                 self._trial.set_user_attr(key, value)
             _logger.info(f"Metric: {key}: {value} at step: {step}")
         try:
-            mlflow.log_metrics(normalize_mlflow_entry_names_in_dict(metrics), step=None)
+            mlflow.log_metrics(normalize_mlflow_entry_names_in_dict(metrics), step=step)
         except Exception as e:
             _logger.error(
                 "Exception raised during MLflow communication! Exception: {}".format(e),
@@ -277,7 +276,7 @@ class OptunaMLflow(object):
             )
 
     def log_iter(self, metrics, step=None):  # TODO: add params and tags?
-        """"Log an iteration or fold as a nasted run."""
+        """Log an iteration or fold as a nasted run."""
         for key, value in metrics.items():
             value_list = self._iter_metrics.get(key, [])
             value_list.append(value)

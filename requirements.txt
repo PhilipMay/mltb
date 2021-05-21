@@ -10,3 +10,4 @@ joblib
 tensorflow
 optuna
 mlflow
+transformers
