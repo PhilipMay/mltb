@@ -1,3 +1,7 @@
+# Copyright (c) 2021 by Philip May
+# This software is distributed under the terms of the BSD 2-Clause License.
+# For details see the LICENSE file in the root directory.
+
 import numpy as np
 from scipy import stats
 import logging
