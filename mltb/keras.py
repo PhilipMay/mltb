@@ -1,4 +1,5 @@
 # Copyright (c) 2020 by Philip May
+# Copyright (c) 2020 by Alexis Côté
 # This software is distributed under the terms of the BSD 2-Clause License.
 # For details see the LICENSE file in the root directory.
 
