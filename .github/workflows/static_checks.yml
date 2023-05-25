@@ -1,4 +1,4 @@
-name: Static Code Check
+name: Static Code Checks
 
 on:
   push:
